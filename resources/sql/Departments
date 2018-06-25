@@ -1,0 +1,31 @@
+DELETE FROM department;
+
+INSERT INTO department (departmentName, departmentCode)
+    VALUES
+      ('Accounting','ACCT'),
+      ('Art', 'ART'),
+      ('Applied Sciences', 'AS'),
+      ('Agricultural Sciences and Natural Resource', 'ASNR'),
+      ('Biological and Environmental Sciences', 'BESC'),
+      ('Chemistry', 'CHEM'),
+      ('Computer Science and Information Systems', 'CSCI'),
+      ('Counseling ', 'COUN'),
+      ('Curriculum and Instruction', 'EDCI'),
+      ('Economics and Finance', 'ECFI'),
+      ('Engineering and Technology', 'ET'),
+      ('Health and Human Performance', 'HHP'),
+      ('Higher Education & Learning Technologies', 'HELT'),
+      ('History', 'HIST'),
+      ('Liberal Studies', 'LIBS'),
+      ('Literature and Languages', 'LITL'),
+      ('Marketing & Business Analytics', 'MKBA'),
+      ('Management', 'MGT'),
+      ('Mathematics', 'MATH'),
+      ('Music', 'MUS'),
+      ('Nursing Department', 'NURS'),
+      ('Physics and Astronomy', 'PHAS'),
+      ('Political Science','PSCI'),
+      ('Psychology and Special Education','PSY'),
+      ('School of Social Work','SWK'),
+      ('Sociology and Criminal Justice','SOC'),
+      ('Theatre','THEA');
