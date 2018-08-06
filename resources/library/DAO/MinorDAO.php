@@ -7,7 +7,7 @@
  */
 
 require_once '../database/DatabaseConnection.php';
-require_once 'MinorDAO.php';
+require_once 'CourseDAO.php';
 
 class MinorDAO
 {
@@ -41,7 +41,7 @@ class MinorDAO
 
     public function getMinorFromId(int $minorId): Minor
     {
-        $minor = new minor();
+        $minor = new Minor();
 
         $sql = "SELECT * FROM minor
                 WHERE minorId = ?";

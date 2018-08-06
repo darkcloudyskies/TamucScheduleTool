@@ -288,7 +288,7 @@ class CourseDAO
 
     private function updateCoursePrereq(Course $course): bool
     {
-
+        //There is no updating, since it's a connector.
     }
 
     public function insertCourse(Course $course): bool

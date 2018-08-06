@@ -9,7 +9,7 @@
 require_once 'Course.php';
 require_once 'Professor.php';
 
-class Section
+class Section implements JsonSerializable
 {
     private $sectionId;
     private $startTime;
@@ -199,5 +199,29 @@ class Section
     public function setStartDate(string $startDate): void
     {
         $this->startDate = $startDate;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'professors' => $this->getProfessors(),
+            'callNum' => $this->getCallNum(),
+            'sectionNum' => $this->getSectionNum(),
+            'location' => $this->getLocation(),
+            'weekDays' => $this->getWeekDays(),
+            'endDate' => $this->getEndDate(),
+            'startDate' => $this->getStartDate(),
+            'endTime' => $this->getEndTime(),
+            'startTime' => $this->getStartTime(),
+            'course' => $this->getCourse(),
+            'sectionId' => $this->getSectionId()
+        ];
     }
 }

@@ -8,7 +8,7 @@
 
 require_once 'ProfessorRating.php';
 
-class Professor
+class Professor implements JsonSerializable
 {
     private $professorId;
     private $professorName;
@@ -61,5 +61,21 @@ class Professor
     public function setProfessorRatings(array $professorRatings): void
     {
         $this->professorRatings = $professorRatings;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'professorId' => $this->getProfessorId(),
+            'professorName' => $this->getProfessorName(),
+            'professorRatings' => $this->getProfessorRatings()
+        ];
     }
 }

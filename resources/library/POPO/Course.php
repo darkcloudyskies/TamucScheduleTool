@@ -10,7 +10,7 @@
 require_once 'Prefix.php';
 require_once 'CourseRating.php';
 
-class Course
+class Course implements JsonSerializable
 {
     private $courseId;
     private $courseName;
@@ -131,5 +131,25 @@ class Course
     public function setCoursePrereqs(array $coursePrereqs): void
     {
         $this->coursePrereqs = $coursePrereqs;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'courseRatings' => $this->getCourseRatings(),
+            'courseId' => $this->getCourseId(),
+            'coursePrereqs' => $this->getCoursePrereqs(),
+            'courseName' => $this->getCourseName(),
+            'courseNum' => $this->getCourseNum(),
+            'prefix' => $this->getPrefix(),
+            'hours' => $this->getHours()
+        ];
     }
 }

@@ -30,9 +30,9 @@ class StudentDAO
                 $student = new student();
 
                 $student->setMajors((new MajorDAO())->getMajorsFromStudentId($row["studentId"]));
-                $student->setMinors((new MinorDAO())->getMinorsFromStudentId("studentId"));
+                $student->setMinors((new MinorDAO())->getMinorsFromStudentId($row["studentId"]));
                 $student->setPassword($row["password"]);
-                $student->setSchedule($row["scheduleId"]);
+                $student->setSchedule((new ScheduleDAO)->getScheduleFromStudentId($row["studentId"]));
                 $student->setStudentId($row["studentId"]);
                 $student->setStudentName($row["studentName"]);
                 $student->setUsername($row["username"]);
@@ -63,9 +63,9 @@ class StudentDAO
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
             $student->setMajors((new MajorDAO())->getMajorsFromStudentId($row["studentId"]));
-            $student->setMinors((new MinorDAO())->getMinorsFromStudentId("studentId"));
+            $student->setMinors((new MinorDAO())->getMinorsFromStudentId($row["studentId"]));
             $student->setPassword($row["password"]);
-            $student->setSchedule($row["scheduleId"]);
+            $student->setSchedule((new ScheduleDAO)->getScheduleFromStudentId($row["studentId"]));
             $student->setStudentId($row["studentId"]);
             $student->setStudentName($row["studentName"]);
             $student->setUsername($row["username"]);
@@ -92,9 +92,9 @@ class StudentDAO
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
             $student->setMajors((new MajorDAO())->getMajorsFromStudentId($row["studentId"]));
-            $student->setMinors((new MinorDAO())->getMinorsFromStudentId("studentId"));
+            $student->setMinors((new MinorDAO())->getMinorsFromStudentId($row["studentId"]));
             $student->setPassword($row["password"]);
-            $student->setSchedule($row["scheduleId"]);
+            $student->setSchedule((new ScheduleDAO)->getScheduleFromStudentId($row["studentId"]));
             $student->setStudentId($row["studentId"]);
             $student->setStudentName($row["studentName"]);
             $student->setUsername($row["username"]);

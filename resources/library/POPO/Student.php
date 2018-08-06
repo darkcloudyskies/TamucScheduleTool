@@ -11,7 +11,7 @@ require_once 'Minor.php';
 require_once 'Course.php';
 require_once 'Schedule.php';
 
-class Student
+class Student implements JsonSerializable
 {
     private $studentId;
     private $studentName;
@@ -149,5 +149,26 @@ class Student
     public function setCoursesTaken(array $coursesTaken): void
     {
         $this->coursesTaken = $coursesTaken;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            //'password' => $this->getPassword(),
+            'username' => $this->getUsername(),
+            'coursesTaken' => $this->getCoursesTaken(),
+            'minors' => $this->getMinors(),
+            'studentId' => $this->getStudentId(),
+            'studentName' => $this->getStudentName(),
+            'majors' => $this->getMajors(),
+            'schedule' => $this->getSchedule()
+        ];
     }
 }

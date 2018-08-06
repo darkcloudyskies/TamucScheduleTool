@@ -25,9 +25,11 @@ class ProfessorRatingDAO
             {
                 $professorRating = new ProfessorRating();
 
-                $professorRating->setProfessorRating($row["professorRating"]);
+                $professorRating->setProfessorRating($row["rating"]);
                 $professorRating->setProfessorRatingId($row["professorRatingId"]);
-                $professorRating->setProfessorReview($row["professorReview"]);
+                $professorRating->setProfessorReview($row["comments"]);
+                $professorRating->setStudentId($row["studentId"]);
+                $professorRating->setProfessorId($row["professorId"]);
 
                 $professorRatings[] = $professorRating;
             }
@@ -53,9 +55,11 @@ class ProfessorRatingDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $professorRating->setProfessorRating($row["professorRating"]);
+            $professorRating->setProfessorRating($row["rating"]);
             $professorRating->setProfessorRatingId($row["professorRatingId"]);
-            $professorRating->setProfessorReview($row["professorReview"]);
+            $professorRating->setProfessorReview($row["comments"]);
+            $professorRating->setStudentId($row["studentId"]);
+            $professorRating->setProfessorId($row["professorId"]);
         }
 
         $conn->close();
@@ -79,9 +83,11 @@ class ProfessorRatingDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $professorRating->setProfessorRating($row["professorRating"]);
+            $professorRating->setProfessorRating($row["rating"]);
             $professorRating->setProfessorRatingId($row["professorRatingId"]);
-            $professorRating->setProfessorReview($row["professorReview"]);
+            $professorRating->setProfessorReview($row["comments"]);
+            $professorRating->setStudentId($row["studentId"]);
+            $professorRating->setProfessorId($row["professorId"]);
         }
 
         $conn->close();
@@ -108,9 +114,11 @@ class ProfessorRatingDAO
             {
                 $professorRating = new ProfessorRating();
 
-                $professorRating->setProfessorRating($row["professorRating"]);
+                $professorRating->setProfessorRating($row["rating"]);
                 $professorRating->setProfessorRatingId($row["professorRatingId"]);
-                $professorRating->setProfessorReview($row["professorReview"]);
+                $professorRating->setProfessorReview($row["comments"]);
+                $professorRating->setStudentId($row["studentId"]);
+                $professorRating->setProfessorId($row["professorId"]);
 
                 $professorRatings[] = $professorRating;
             }
@@ -121,7 +129,7 @@ class ProfessorRatingDAO
         return $professorRatings;
     }
 
-    public function updateProfessorRating(ProfessorRating $professorRating,Professor $professor,Student $student): bool
+    public function updateProfessorRating(ProfessorRating $professorRating): bool
     {
         $sql = "UPDATE professorrating SET
                 professorRatingId = ?,
@@ -133,7 +141,7 @@ class ProfessorRatingDAO
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("iiiis",$professorRating->getProfessorRatingId(),$student->getStudentId(),$professor->getProfessorId(),$professorRating->getProfessorRating(),$professorRating->getProfessorReview());
+        $pst->bind_param("iiiis",$professorRating->getProfessorRatingId(),$professorRating->getStudentId(),$professorRating->getProfessorId(),$professorRating->getProfessorRating(),$professorRating->getProfessorReview());
 
         $result = $pst->execute();
 
@@ -142,7 +150,7 @@ class ProfessorRatingDAO
         return $result;
     }
 
-    public function insertProfessorRating(ProfessorRating $professorRating,Professor $professor,Student $student): bool
+    public function insertProfessorRating(ProfessorRating $professorRating): bool
     {
         $sql = "INSERT INTO professorrating (studentId, professorId, rating, comments)
                 VALUES (?,?,?,?)";
@@ -150,7 +158,7 @@ class ProfessorRatingDAO
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("iiis",$student->getStudentId(),$professor->getProfessorId(),$professorRating->getProfessorRating(),$professorRating->getProfessorReview());
+        $pst->bind_param("iiis",$professorRating->getStudentId(),$professorRating->getProfessorId(),$professorRating->getProfessorRating(),$professorRating->getProfessorReview());
 
         $result = $pst->execute();
 

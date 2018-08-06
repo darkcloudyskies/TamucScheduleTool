@@ -8,7 +8,7 @@
 
 require_once 'Course.php';
 
-class Major
+class Major implements JsonSerializable
 {
     private $majorId;
     private $majorName;
@@ -61,5 +61,21 @@ class Major
     public function setCourses(array $courses): void
     {
         $this->courses = $courses;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'courses' => $this->getCourses(),
+            'majorId' => $this->getMajorId(),
+            'majorName' => $this->getMajorName()
+        ];
     }
 }

@@ -6,11 +6,14 @@
  * Time: 7:19 PM
  */
 
-class CourseRating
+class CourseRating implements JsonSerializable
 {
     private $courseRatingId;
     private $courseReview;
     private $courseRating;
+
+    private $studentId;
+    private $courseId;
 
     /**
      * @return mixed
@@ -47,7 +50,7 @@ class CourseRating
     /**
      * @return mixed
      */
-    public function getCourseRating(): CourseRating
+    public function getCourseRating(): int
     {
         return $this->courseRating;
     }
@@ -59,4 +62,55 @@ class CourseRating
     {
         $this->courseRating = $courseRating;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStudentId()
+    {
+        return $this->studentId;
+    }
+
+    /**
+     * @param mixed $studentId
+     */
+    public function setStudentId($studentId): void
+    {
+        $this->studentId = $studentId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCourseId()
+    {
+        return $this->courseId;
+    }
+
+    /**
+     * @param mixed $courseId
+     */
+    public function setCourseId($courseId): void
+    {
+        $this->courseId = $courseId;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'courseId' => $this->getCourseId(),
+            'studentId' => $this->getStudentId(),
+            'courseReview' => $this->getCourseReview(),
+            'courseRating' => $this->getCourseRating(),
+            'courseRatingId' => $this->getCourseRatingId()
+        ];
+    }
+
 }

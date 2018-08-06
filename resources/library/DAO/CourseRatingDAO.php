@@ -29,6 +29,8 @@ class CourseRatingDAO
                 $courseRating->setCourseRating($row["rating"]);
                 $courseRating->setCourseRatingId($row["courseRatingId"]);
                 $courseRating->setCourseReview($row["comments"]);
+                $courseRating->setStudentId($row["studentId"]);
+                $courseRating->setCourseId($row["courseId"]);
 
                 $courseRatings[] = $courseRating;
             }
@@ -58,6 +60,8 @@ class CourseRatingDAO
             $courseRating->setCourseRating($row["rating"]);
             $courseRating->setCourseRatingId($row["courseRatingId"]);
             $courseRating->setCourseReview($row["comments"]);
+            $courseRating->setStudentId($row["studentId"]);
+            $courseRating->setCourseId($row["courseId"]);
         }
 
         $conn->close();
@@ -85,6 +89,8 @@ class CourseRatingDAO
             $courseRating->setCourseRating($row["rating"]);
             $courseRating->setCourseRatingId($row["courseRatingId"]);
             $courseRating->setCourseReview($row["comments"]);
+            $courseRating->setStudentId($row["studentId"]);
+            $courseRating->setCourseId($row["courseId"]);
         }
 
         $conn->close();
@@ -115,6 +121,8 @@ class CourseRatingDAO
                 $courseRating->setCourseRating($row["rating"]);
                 $courseRating->setCourseRatingId($row["courseRatingId"]);
                 $courseRating->setCourseReview($row["comments"]);
+                $courseRating->setStudentId($row["studentId"]);
+                $courseRating->setCourseId($row["courseId"]);
 
                 $courseRatings[] = $courseRating;
             }
@@ -125,7 +133,7 @@ class CourseRatingDAO
         return $courseRatings;
     }
 
-    public function updateCourseRating(CourseRating $courseRating, Course $course,Student $student): bool
+    public function updateCourseRating(CourseRating $courseRating): bool
     {
         $sql = "UPDATE courserating SET
                 courseRatingId = ?,
@@ -137,7 +145,7 @@ class CourseRatingDAO
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("iiiis",$courseRating->getCourseRatingId(),$student->getStudentId(),$course->getCourseId(),$courseRating->getCourseRating(),$courseRating->getCourseReview());
+        $pst->bind_param("iiiis",$courseRating->getCourseRatingId(),$courseRating->getStudentId(),$courseRating->getCourseId(),$courseRating->getCourseRating(),$courseRating->getCourseReview());
 
         $result = $pst->execute();
 
@@ -146,7 +154,7 @@ class CourseRatingDAO
         return $result;
     }
 
-    public function insertCourseRating(CourseRating $courseRating, Course $course,Student $student): bool
+    public function insertCourseRating(CourseRating $courseRating): bool
     {
         $sql = "INSERT INTO courserating (studentId, courseId, rating, comments)
                 VALUES (?,?,?,?)";
@@ -154,7 +162,7 @@ class CourseRatingDAO
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("iiis",$student->getStudentId(),$course->getCourseId(),$courseRating->getCourseRating(),$courseRating->getCourseReview());
+        $pst->bind_param("iiis",$courseRating->getStudentId(),$courseRating->getCourseId(),$courseRating->getCourseRating(),$courseRating->getCourseReview());
 
         $result = $pst->execute();
 

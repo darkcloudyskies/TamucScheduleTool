@@ -29,7 +29,7 @@ class DepartmentDAO
                 $department->setDepartmentId($row["departmentId"]);
                 $department->setDepartmentName($row["departmentName"]);
 
-                $department[] = $department;
+                $departments[] = $department;
             }
         }
 

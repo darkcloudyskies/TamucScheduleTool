@@ -28,7 +28,7 @@ class SectionDAO
                 $section = new section();
 
                 $section->setCallNum($row["callNum"]);
-                $section->setCourse($row["courseId"]);
+                $section->setCourse((new CourseDAO())->getCourseFromId($row["courseId"]));
                 $section->setEndDate($row["endDate"]);
                 $section->setEndTime($row["endTime"]);
                 $section->setLocation($row["location"]);
@@ -64,7 +64,7 @@ class SectionDAO
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
             $section->setCallNum($row["callNum"]);
-            $section->setCourse($row["courseId"]);
+            $section->setCourse((new CourseDAO())->getCourseFromId($row["courseId"]));
             $section->setEndDate($row["endDate"]);
             $section->setEndTime($row["endTime"]);
             $section->setLocation($row["location"]);
@@ -97,7 +97,7 @@ class SectionDAO
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
             $section->setCallNum($row["callNum"]);
-            $section->setCourse($row["courseId"]);
+            $section->setCourse((new CourseDAO())->getCourseFromId($row["courseId"]));
             $section->setEndDate($row["endDate"]);
             $section->setEndTime($row["endTime"]);
             $section->setLocation($row["location"]);
@@ -133,10 +133,10 @@ class SectionDAO
         {
             while($row = $result->fetch_assoc())
             {
-                $section = new section();
+                $section = new Section();
 
                 $section->setCallNum($row["callNum"]);
-                $section->setCourse($row["courseId"]);
+                $section->setCourse((new CourseDAO())->getCourseFromId($row["courseId"]));
                 $section->setEndDate($row["endDate"]);
                 $section->setEndTime($row["endTime"]);
                 $section->setLocation($row["location"]);

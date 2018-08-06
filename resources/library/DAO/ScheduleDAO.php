@@ -26,9 +26,10 @@ class ScheduleDAO
             {
                 $schedule = new schedule();
 
-                $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["sectionId"]));
+                $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["scheduleId"]));
                 $schedule->setScheduleId($row["scheduleId"]);
                 $schedule->setScheduleName($row["scheduleName"]);
+                $schedule->setStudentId($row["studentId"]);
 
                 $schedules[] = $schedule;
             }
@@ -54,9 +55,10 @@ class ScheduleDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["sectionId"]));
+            $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["scheduleId"]));
             $schedule->setScheduleId($row["scheduleId"]);
             $schedule->setScheduleName($row["scheduleName"]);
+            $schedule->setStudentId($row["studentId"]);
         }
 
         $conn->close();
@@ -79,9 +81,10 @@ class ScheduleDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["sectionId"]));
+            $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["scheduleId"]));
             $schedule->setScheduleId($row["scheduleId"]);
             $schedule->setScheduleName($row["scheduleName"]);
+            $schedule->setStudentId($row["studentId"]);
         }
 
         $conn->close();
@@ -89,7 +92,7 @@ class ScheduleDAO
         return $schedule;
     }
 
-    public function updateSchedule(Schedule $schedule,Student $student): bool
+    public function updateSchedule(Schedule $schedule): bool
     {
         $sql = "UPDATE schedule SET
                 scheduleId = ?,
@@ -99,7 +102,7 @@ class ScheduleDAO
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("iis",$schedule->getScheduleId(),$student->getStudentId(),$schedule->getScheduleName());
+        $pst->bind_param("iis",$schedule->getScheduleId(),$schedule->getStudentId(),$schedule->getScheduleName());
 
         $result = $pst->execute();
         $result &= $this->updateScheduleSection($schedule);
@@ -131,7 +134,7 @@ class ScheduleDAO
         return $result;
     }
 
-    public function insertSchedule(Schedule $schedule,Student $student): bool
+    public function insertSchedule(Schedule $schedule): bool
     {
         $sql = "INSERT INTO schedule (studentId, scheduleName)
                 VALUES (?,?)";
@@ -139,7 +142,7 @@ class ScheduleDAO
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("is",$student->getStudentId(),$schedule->getScheduleName());
+        $pst->bind_param("is",$schedule->getStudentId(),$schedule->getScheduleName());
 
         $result = $pst->execute();
         $result &= $this->insertScheduleSection($schedule);

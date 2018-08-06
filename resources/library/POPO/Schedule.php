@@ -8,12 +8,14 @@
 
 require_once 'Section.php';
 
-class Schedule
+class Schedule implements JsonSerializable
 {
     private $scheduleId;
     private $scheduleName;
 
     private $sections = array();
+
+    private $studentId;
 
     /**
      * @return mixed
@@ -63,4 +65,36 @@ class Schedule
         $this->sections = $sections;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getStudentId()
+    {
+        return $this->studentId;
+    }
+
+    /**
+     * @param mixed $studentId
+     */
+    public function setStudentId($studentId): void
+    {
+        $this->studentId = $studentId;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'studentId' => $this->getStudentId(),
+            'scheduleId' => $this->getScheduleId(),
+            'sections' => $this->getSections(),
+            'scheduleName' => $this->getScheduleName()
+        ];
+    }
 }
