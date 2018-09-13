@@ -7,6 +7,11 @@
  */
 
 require_once "CourseOverview.php";
+require_once "ScheduleCourses.php";
 
-$courseOverview = new CourseOverview();
-$courseOverview->scrapeScheduleOverViewPage();
+ini_set('max_execution_time', 300);
+ini_set('memory_limit', '1000M');
+
+$scheduleCourses = new ScheduleCourses();
+$scheduleCourses->scrapeEachDepartmentPage();
+

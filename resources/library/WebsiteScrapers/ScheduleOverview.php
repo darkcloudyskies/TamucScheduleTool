@@ -44,7 +44,7 @@ class ScheduleOverview
             $department = $this->getDepartmentFromRow($row);
             $prefixes = $this->getPrefixesFromRow($row);
 
-            $this->insertData($department, $prefixes);
+            $this->insertPrefixData($department, $prefixes);
         }
         return $departments;
     }
@@ -75,7 +75,7 @@ class ScheduleOverview
         return $prefixes;
     }
 
-    private function insertData(Department $department, array $prefixes): void
+    private function insertPrefixData(Department $department, array $prefixes): void
     {
         $prefixDAO = new PrefixDAO();
         $departmentDAO = new DepartmentDAO();
