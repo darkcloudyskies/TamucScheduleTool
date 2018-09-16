@@ -6,8 +6,8 @@
  * Time: 7:36 PM
  */
 
-require_once '../database/DatabaseConnection.php';
-require_once 'DepartmentDAO.php';
+require_once __DIR__.'/../database/DatabaseConnection.php';
+require_once __DIR__.'/DepartmentDAO.php';
 
 class PrefixDAO
 {
@@ -92,14 +92,14 @@ class PrefixDAO
     public function updatePrefix(Prefix $prefix): bool
     {
         $sql = "UPDATE prefix SET
-                prefixId = ?,
                 prefixName = ?,
-                departmentId = ?";
+                departmentId = ?
+                WHERE prefixId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("isi",$prefix->getPrefixId(),$prefix->getPrefixName(),$prefix->getDepartment()->getDepartmentId());
+        $pst->bind_param("sii",$prefix->getPrefixName(),$prefix->getDepartment()->getDepartmentId(),$prefix->getPrefixId());
 
         $result = $pst->execute();
 

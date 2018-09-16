@@ -6,8 +6,8 @@
  * Time: 7:35 PM
  */
 
-require_once '../database/DatabaseConnection.php';
-require_once 'CourseDAO.php';
+require_once __DIR__.'/../database/DatabaseConnection.php';
+require_once __DIR__.'/CourseDAO.php';
 
 class MajorDAO
 {
@@ -126,13 +126,13 @@ class MajorDAO
     public function updateMajor(Major $major): bool
     {
         $sql = "UPDATE major SET
-                majorId = ?,
-                majorName = ?";
+                majorName = ?
+                WHERE majorId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("is",$major->getMajorId(),$major->getMajorName());
+        $pst->bind_param("si",$major->getMajorName(),$major->getMajorId());
 
         $result = $pst->execute();
         $result &= $this->updateCourseMajor($major);
@@ -144,20 +144,17 @@ class MajorDAO
 
     private function updateCourseMajor(Major $major): bool
     {
-        $sql = "UPDATE coursemajor SET
-                courseId = ?,
-                majorId = ?";
+        $sql = "DELETE FROM coursemajor WHERE majorId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
         $result = true;
 
-        foreach ($major->getCourses() as $course)
-        {
-            $pst->bind_param("ii",$course->getCourseId(),$major->getMajorId());
-            $result &= $pst->execute();
-        }
+
+        $pst->bind_param("i",$major->getMajorId());
+        $result &= $pst->execute();
+        $result &= $this->insertCourseMajor($major);
 
         $conn->close();
 

@@ -7,8 +7,8 @@
  */
 
 
-require_once 'Prefix.php';
-require_once 'CourseRating.php';
+require_once __DIR__.'/Prefix.php';
+require_once __DIR__.'/CourseRating.php';
 
 class Course implements JsonSerializable
 {
@@ -151,5 +151,10 @@ class Course implements JsonSerializable
             'prefix' => $this->getPrefix(),
             'hours' => $this->getHours()
         ];
+    }
+
+    public function __toString() : String
+    {
+        return $this->getCourseId();
     }
 }

@@ -75,4 +75,9 @@ class Department implements JsonSerializable
             'departmentName' => $this->getDepartmentName()
         ];
     }
+
+    public function __toString() : String
+    {
+        return $this->getDepartmentId();
+    }
 }

@@ -1,4 +1,33 @@
 <?php
+
+require_once "../resources/library/DAO/StudentDAO.php";
+require_once "../resources/library/POPO/Student.php";
+
+session_start();
+
+if (!empty($_GET))
+{
+    if($_GET["type"] == "Login") {
+        $username = $_GET["username"];
+        $password = $_GET["password"];
+
+        $studentDAO = new StudentDAO();
+
+        $student = $studentDAO->getStudentFromUsername($username);
+
+        if ($student->getPassword() == $password) {
+            $_SESSION['user_id'] = $student->getUsername();
+            header("Location: account.php");
+            exit();
+        }
+        else
+        {
+
+        }
+    }
+
+}
+
 include_once ("common/header.php");
 ?>
 
@@ -14,7 +43,7 @@ include_once ("common/header.php");
                     <form accept-charset="UTF-8" role="form">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Username" name="email" type="text">
+                                <input class="form-control" placeholder="Username" name="username" type="text">
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password" name="password" type="password" value="">
@@ -24,7 +53,7 @@ include_once ("common/header.php");
                                     <input name="remember" type="checkbox" value="Remember Me"> Remember Me
                                 </label>
                             </div>
-                            <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                            <input class="btn btn-lg btn-success btn-block" name="type" type="submit" value="Login">
                         </fieldset>
                     </form>
                     <hr/>

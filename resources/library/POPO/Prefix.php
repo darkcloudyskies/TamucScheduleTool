@@ -6,7 +6,7 @@
  * Time: 7:19 PM
  */
 
-require_once 'Department.php';
+require_once __DIR__.'/Department.php';
 
 class Prefix implements JsonSerializable
 {
@@ -77,5 +77,10 @@ class Prefix implements JsonSerializable
             'department' => $this->getDepartment(),
             'prefixName' => $this->getPrefixName()
         ];
+    }
+
+    public function __toString() : String
+    {
+        return $this->getPrefixId();
     }
 }

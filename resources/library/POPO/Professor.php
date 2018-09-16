@@ -6,7 +6,7 @@
  * Time: 7:20 PM
  */
 
-require_once 'ProfessorRating.php';
+require_once __DIR__.'/ProfessorRating.php';
 
 class Professor implements JsonSerializable
 {
@@ -77,5 +77,10 @@ class Professor implements JsonSerializable
             'professorName' => $this->getProfessorName(),
             'professorRatings' => $this->getProfessorRatings()
         ];
+    }
+
+    public function __toString() : String
+    {
+        return $this->getProfessorId();
     }
 }

@@ -6,7 +6,7 @@
  * Time: 4:34 PM
  */
 
-require_once 'Course.php';
+require_once __DIR__.'/Course.php';
 
 class Major implements JsonSerializable
 {
@@ -77,5 +77,10 @@ class Major implements JsonSerializable
             'majorId' => $this->getMajorId(),
             'majorName' => $this->getMajorName()
         ];
+    }
+
+    public function __toString() : String
+    {
+        return $this->getMajorId();
     }
 }

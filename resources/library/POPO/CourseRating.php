@@ -113,4 +113,9 @@ class CourseRating implements JsonSerializable
         ];
     }
 
+    public function __toString() : String
+    {
+        return $this->getCourseRatingId();
+    }
+
 }

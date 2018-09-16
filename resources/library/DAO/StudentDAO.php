@@ -6,11 +6,11 @@
  * Time: 2:20 PM
  */
 
-require_once '../database/DatabaseConnection.php';
-require_once 'MajorDAO.php';
-require_once 'MinorDAO.php';
-require_once 'CourseDAO.php';
-require_once 'ScheduleDAO.php';
+require_once __DIR__.'/../database/DatabaseConnection.php';
+require_once __DIR__.'/MajorDAO.php';
+require_once __DIR__.'/MinorDAO.php';
+require_once __DIR__.'/CourseDAO.php';
+require_once __DIR__.'/ScheduleDAO.php';
 
 class StudentDAO
 {
@@ -69,6 +69,7 @@ class StudentDAO
             $student->setStudentId($row["studentId"]);
             $student->setStudentName($row["studentName"]);
             $student->setUsername($row["username"]);
+            $student->setCoursesTaken((new CourseDAO())->getCoursesFromStudentId($row["studentId"]));
         }
 
         $conn->close();
@@ -98,6 +99,7 @@ class StudentDAO
             $student->setStudentId($row["studentId"]);
             $student->setStudentName($row["studentName"]);
             $student->setUsername($row["username"]);
+            $student->setCoursesTaken((new CourseDAO())->getCoursesFromStudentId($row["studentId"]));
         }
 
         $conn->close();
@@ -108,15 +110,15 @@ class StudentDAO
     public function updateStudent(Student $student): bool
     {
         $sql = "UPDATE student SET
-                studentId = ?,
                 studentName = ?,
                 username = ?,
-                password = ?";
+                password = ?
+                WHERE studentId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("isss",$student->getStudentId(),$student->getStudentName(),$student->getUsername(),$student->getPassword());
+        $pst->bind_param("sssi",$student->getStudentName(),$student->getUsername(),$student->getPassword(),$student->getStudentId());
 
         $result = $pst->execute();
         $result &= $this->updateStudentCourse($student);
@@ -130,20 +132,17 @@ class StudentDAO
 
     private function updateStudentMajor(Student $student): bool
     {
-        $sql = "UPDATE studentmajor SET
-                studentId = ?,
-                majorId = ?";
+        $sql = "DELETE FROM studentmajor WHERE studentId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
         $result = true;
 
-        foreach ($student->getMajors() as $major)
-        {
-            $pst->bind_param("ii",$student->getStudentId(),$major->getMajorId());
-            $result &= $pst->execute();
-        }
+        $pst->bind_param("i",$student->getStudentId());
+        $result &= $pst->execute();
+        $result &= $this->insertStudentMajor($student);
+
 
         $conn->close();
 
@@ -152,20 +151,17 @@ class StudentDAO
 
     private function updateStudentMinor(Student $student): bool
     {
-        $sql = "UPDATE studentminor SET
-                studentId = ?,
-                minorId = ?";
+        $sql = "DELETE FROM studentminor WHERE studentId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
         $result = true;
 
-        foreach ($student->getMinors() as $minor)
-        {
-            $pst->bind_param("ii",$student->getStudentId(),$minor->getMinorId());
-            $result &= $pst->execute();
-        }
+        $pst->bind_param("i",$student->getStudentId());
+        $result &= $pst->execute();
+        $result &= $this->insertStudentMinor($student);
+
 
         $conn->close();
 
@@ -174,20 +170,17 @@ class StudentDAO
 
     private function updateStudentCourse(Student $student): bool
     {
-        $sql = "UPDATE studentcourse SET
-                studentId = ?,
-                courseId = ?";
+        $sql = "DELETE FROM studentcourse WHERE studentId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
         $result = true;
 
-        foreach ($student->getCoursesTaken() as $course)
-        {
-            $pst->bind_param("ii",$student->getStudentId(),$course->getCourseId());
-            $result &= $pst->execute();
-        }
+        $pst->bind_param("i",$student->getStudentId());
+        $result &= $pst->execute();
+        $result &= $this->insertStudentCourse($student);
+
 
         $conn->close();
 

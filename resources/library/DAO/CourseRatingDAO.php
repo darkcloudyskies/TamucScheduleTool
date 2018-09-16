@@ -6,7 +6,7 @@
  * Time: 7:33 PM
  */
 
-require_once '../database/DatabaseConnection.php';
+require_once __DIR__.'/../database/DatabaseConnection.php';
 
 class CourseRatingDAO
 {
@@ -136,16 +136,16 @@ class CourseRatingDAO
     public function updateCourseRating(CourseRating $courseRating): bool
     {
         $sql = "UPDATE courserating SET
-                courseRatingId = ?,
                 studentId = ?,
                 courseId = ?,
                 rating = ?,
-                comments = ?";
+                comments = ?
+                WHERE courseRatingId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("iiiis",$courseRating->getCourseRatingId(),$courseRating->getStudentId(),$courseRating->getCourseId(),$courseRating->getCourseRating(),$courseRating->getCourseReview());
+        $pst->bind_param("iiisi",$courseRating->getStudentId(),$courseRating->getCourseId(),$courseRating->getCourseRating(),$courseRating->getCourseReview(),$courseRating->getCourseRatingId());
 
         $result = $pst->execute();
 

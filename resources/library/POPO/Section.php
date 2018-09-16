@@ -6,8 +6,8 @@
  * Time: 6:37 PM
  */
 
-require_once 'Course.php';
-require_once 'Professor.php';
+require_once __DIR__.'/Course.php';
+require_once __DIR__.'/Professor.php';
 
 class Section implements JsonSerializable
 {
@@ -223,5 +223,10 @@ class Section implements JsonSerializable
             'course' => $this->getCourse(),
             'sectionId' => $this->getSectionId()
         ];
+    }
+
+    public function __toString() : String
+    {
+        return $this->getSectionId();
     }
 }

@@ -6,7 +6,7 @@
  * Time: 4:37 PM
  */
 
-require_once 'Course.php';
+require_once __DIR__.'/Course.php';
 
 class Minor implements JsonSerializable
 {
@@ -77,5 +77,10 @@ class Minor implements JsonSerializable
             'minorId' => $this->getMinorId(),
             'minorName' => $this->getMinorName()
         ];
+    }
+
+    public function __toString() : String
+    {
+        return $this->getMinorId();
     }
 }

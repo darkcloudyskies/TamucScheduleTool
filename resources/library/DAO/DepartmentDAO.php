@@ -6,7 +6,7 @@
  * Time: 7:33 PM
  */
 
-require_once '../database/DatabaseConnection.php';
+require_once __DIR__.'/../database/DatabaseConnection.php';
 
 class DepartmentDAO
 {

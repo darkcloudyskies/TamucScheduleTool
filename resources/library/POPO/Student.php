@@ -6,10 +6,10 @@
  * Time: 4:20 PM
  */
 
-require_once 'Major.php';
-require_once 'Minor.php';
-require_once 'Course.php';
-require_once 'Schedule.php';
+require_once __DIR__.'/Major.php';
+require_once __DIR__.'/Minor.php';
+require_once __DIR__.'/Course.php';
+require_once __DIR__.'/Schedule.php';
 
 class Student implements JsonSerializable
 {
@@ -170,5 +170,10 @@ class Student implements JsonSerializable
             'majors' => $this->getMajors(),
             'schedule' => $this->getSchedule()
         ];
+    }
+
+    public function __toString() : String
+    {
+        return $this->getStudentId();
     }
 }

@@ -6,8 +6,8 @@
  * Time: 7:38 PM
  */
 
-require_once '../database/DatabaseConnection.php';
-require_once 'SectionDAO.php';
+require_once __DIR__.'/../database/DatabaseConnection.php';
+require_once __DIR__.'/SectionDAO.php';
 
 class ScheduleDAO
 {
@@ -95,14 +95,14 @@ class ScheduleDAO
     public function updateSchedule(Schedule $schedule): bool
     {
         $sql = "UPDATE schedule SET
-                scheduleId = ?,
                 studentId = ?,
-                scheduleName = ?";
+                scheduleName = ?
+                WHERE scheduleId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("iis",$schedule->getScheduleId(),$schedule->getStudentId(),$schedule->getScheduleName());
+        $pst->bind_param("isi",$schedule->getStudentId(),$schedule->getScheduleName(),$schedule->getScheduleId());
 
         $result = $pst->execute();
         $result &= $this->updateScheduleSection($schedule);
@@ -114,20 +114,17 @@ class ScheduleDAO
 
     private function updateScheduleSection(Schedule $schedule): bool
     {
-        $sql = "UPDATE schedulesection SET
-                scheduleId = ?,
-                sectionId = ?";
+        $sql = "DELETE FROM schedulesection WHERE scheduleId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
         $result = true;
 
-        foreach ($schedule->getSections() as $section)
-        {
-            $pst->bind_param("ii",$schedule->getScheduleId(),$section->getSectionId());
-            $result &= $pst->execute();
-        }
+        $pst->bind_param("i",$schedule->getScheduleId());
+        $result &= $pst->execute();
+        $result &= $this->insertScheduleSection($schedule);
+
 
         $conn->close();
 

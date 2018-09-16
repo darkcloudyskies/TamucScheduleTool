@@ -6,7 +6,7 @@
  * Time: 4:38 PM
  */
 
-require_once 'Section.php';
+require_once __DIR__.'/Section.php';
 
 class Schedule implements JsonSerializable
 {
@@ -96,5 +96,10 @@ class Schedule implements JsonSerializable
             'sections' => $this->getSections(),
             'scheduleName' => $this->getScheduleName()
         ];
+    }
+
+    public function __toString() : String
+    {
+        return $this->getScheduleId();
     }
 }

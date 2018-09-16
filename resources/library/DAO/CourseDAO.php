@@ -6,9 +6,9 @@
  * Time: 7:30 PM
  */
 
-require_once '../database/DatabaseConnection.php';
-require_once 'PrefixDAO.php';
-require_once 'CourseRatingDAO.php';
+require_once __DIR__.'/../database/DatabaseConnection.php';
+require_once __DIR__.'/PrefixDAO.php';
+require_once __DIR__.'/CourseRatingDAO.php';
 
 class CourseDAO
 {
@@ -288,7 +288,19 @@ class CourseDAO
 
     private function updateCoursePrereq(Course $course): bool
     {
-        //There is no updating, since it's a connector.
+        $sql = "DELETE FROM courseprereq WHERE courseId = ?";
+
+        $conn = (new DatabaseConnection())->getConnection();
+        $pst = $conn->prepare($sql);
+
+        $pst->bind_param("i",$course->getCourseId());
+
+        $result = $pst->execute();
+        $result &= $this->insertCoursePrereq($course);
+
+        $conn->close();
+
+        return $result;
     }
 
     public function insertCourse(Course $course): bool

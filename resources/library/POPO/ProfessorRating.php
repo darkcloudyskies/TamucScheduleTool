@@ -112,4 +112,8 @@ class ProfessorRating implements JsonSerializable
             'profesorRatingId' => $this->getProfessorRatingId()
         ];
     }
+    public function __toString() : String
+    {
+        return $this->getProfessorRating();
+    }
 }

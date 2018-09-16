@@ -6,8 +6,8 @@
  * Time: 7:36 PM
  */
 
-require_once '../database/DatabaseConnection.php';
-require_once 'CourseDAO.php';
+require_once __DIR__.'/../database/DatabaseConnection.php';
+require_once __DIR__.'/CourseDAO.php';
 
 class MinorDAO
 {
@@ -126,13 +126,13 @@ class MinorDAO
     public function updateMinor(Minor $minor): bool
     {
         $sql = "UPDATE minor SET
-                minorId = ?,
-                minorName = ?";
+                minorName = ?
+                WHERE minorId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("is",$minor->getMinorId(),$minor->getMinorId());
+        $pst->bind_param("si",$minor->getMinorName(),$minor->getMinorId());
 
         $result = $pst->execute();
         $result &= $this->updateCourseMinor($minor);
@@ -144,20 +144,16 @@ class MinorDAO
 
     private function updateCourseMinor(Minor $minor): bool
     {
-        $sql = "UPDATE courseminor SET
-                courseId = ?,
-                minorId = ?";
+        $sql = "DELETE FROM courseminor WHERE minorId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
         $result = true;
 
-        foreach ($minor->getCourses() as $course)
-        {
-            $pst->bind_param("ii",$course->getCourseId(),$minor->getMinorId());
-            $result &= $pst->execute();
-        }
+        $pst->bind_param("i",$minor->getMinorId());
+        $result &= $pst->execute();
+        $result &= $this->insertCourseMinor($minor);
 
         $conn->close();
 

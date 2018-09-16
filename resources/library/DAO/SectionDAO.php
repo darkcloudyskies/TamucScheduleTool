@@ -6,9 +6,9 @@
  * Time: 7:39 PM
  */
 
-require_once '../database/DatabaseConnection.php';
-require_once 'CourseDAO.php';
-require_once 'ProfessorDAO.php';
+require_once __DIR__.'/../database/DatabaseConnection.php';
+require_once __DIR__.'/CourseDAO.php';
+require_once __DIR__.'/ProfessorDAO.php';
 
 class SectionDAO
 {
@@ -159,7 +159,6 @@ class SectionDAO
     public function updateSection(Section $section): bool
     {
         $sql = "UPDATE section SET
-                sectionId = ?,
                 courseId = ?,
                 startTime = ?,
                 endTime = ?,
@@ -168,12 +167,13 @@ class SectionDAO
                 weekDays = ?,
                 location = ?,
                 sectionNum = ?,
-                callNum = ?";
+                callNum = ?
+                WHERE sectionId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
-        $pst->bind_param("iisssssssi",$section->getSectionId(),$section->getCourse()->getCourseId(),$section->getStartTime(),$section->getEndTime(),$section->getStartDate(),$section->getEndDate(),$section->getWeekDays(),$section->getLocation(),$section->getSectionNum(),$section->getCallNum());
+        $pst->bind_param("isssssssii",$section->getCourse()->getCourseId(),$section->getStartTime(),$section->getEndTime(),$section->getStartDate(),$section->getEndDate(),$section->getWeekDays(),$section->getLocation(),$section->getSectionNum(),$section->getCallNum(),$section->getSectionId());
 
         $result = $pst->execute();
         $result &= $this->updateSectionProfessor($section);
@@ -185,20 +185,16 @@ class SectionDAO
 
     private function updateSectionProfessor(Section $section): bool
     {
-        $sql = "UPDATE sectionprofessor SET
-                professorId = ?,
-                sectionId = ?";
+        $sql = "DELETE FROM sectionprofessor WHERE sectionId = ?";
 
         $conn = (new DatabaseConnection())->getConnection();
         $pst = $conn->prepare($sql);
 
         $result = true;
 
-        foreach ($section->getProfessors() as $professor)
-        {
-            $pst->bind_param("ii",$professor->getProfessorId(),$section->getSectionId());
-            $result &= $pst->execute();
-        }
+        $pst->bind_param("i",$section->getSectionId());
+        $result &= $pst->execute();
+        $result &= $this->insertSectionProfessor($section);
 
         $conn->close();
 

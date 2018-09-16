@@ -23,10 +23,22 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Account</a>
+                <a class="nav-link" href="account.php">Account</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Schedules</a>
+                <a class="nav-link" href="schedule.php">Schedule</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="courses.php">Courses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="professors.php">Professors</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="majors.php">Majors</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="minors.php">Minors</a>
             </li>
         </ul>
     </div>

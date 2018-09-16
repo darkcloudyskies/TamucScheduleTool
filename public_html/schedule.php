@@ -1,4 +1,5 @@
 <?php
+include_once ("common/loginCheck.php");
 include_once ("common/header.php");
 ?>
 
