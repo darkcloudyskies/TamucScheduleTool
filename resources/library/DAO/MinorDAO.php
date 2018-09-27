@@ -22,16 +22,7 @@ class MinorDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $minor = new minor();
-
-                $minor->setCourses((new CourseDAO())->getCoursesFromMinorId($row["minorId"]));
-                $minor->setMinorId($row["minorId"]);
-                $minor->setMinorName($row["minorName"]);
-
-                $minors[] = $minor;
-            }
+            $minors = $this->getMinorsFromResult($result);
         }
 
         $conn->close();
@@ -54,9 +45,7 @@ class MinorDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $minor->setCourses((new CourseDAO())->getCoursesFromMinorId($row["minorId"]));
-            $minor->setMinorId($row["minorId"]);
-            $minor->setMinorName($row["minorName"]);
+            $minor = $this->getMinorFromRow($row);
         }
 
         $conn->close();
@@ -66,7 +55,7 @@ class MinorDAO
 
     public function getMinorFromName(string $minorName): Minor
     {
-        $minor = new minor();
+        $minor = new Minor();
 
         $sql = "SELECT * FROM minor
                 WHERE minorName = ?";
@@ -79,9 +68,7 @@ class MinorDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $minor->setCourses((new CourseDAO())->getCoursesFromMinorId($row["minorId"]));
-            $minor->setMinorId($row["minorId"]);
-            $minor->setMinorName($row["minorName"]);
+            $minor = $this->getMinorFromRow($row);
         }
 
         $conn->close();
@@ -106,21 +93,35 @@ class MinorDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $minor = new minor();
-
-                $minor->setCourses((new CourseDAO())->getCoursesFromMinorId($row["minorId"]));
-                $minor->setMinorId($row["minorId"]);
-                $minor->setMinorName($row["minorName"]);
-
-                $minors[] = $minor;
-            }
+            $minors = $this->getMinorsFromResult($result);
         }
 
         $conn->close();
 
         return $minors;
+    }
+
+    private function getMinorsFromResult(mysqli_result $result): array
+    {
+        $minors = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $minors[] = $this->getMinorFromRow($row);
+        }
+
+        return $minors;
+    }
+
+    private function getMinorFromRow(array $row): Minor
+    {
+        $minor = new Minor();
+
+        $minor->setCourses((new CourseDAO())->getCoursesFromMinorId($row["minorId"]));
+        $minor->setMinorId($row["minorId"]);
+        $minor->setMinorName($row["minorName"]);
+
+        return $minor;
     }
 
     public function updateMinor(Minor $minor): bool

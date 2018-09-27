@@ -1,5 +1,5 @@
 
-CREATE TABLE Student
+CREATE TABLE student
 (
   studentId INT NOT NULL AUTO_INCREMENT,
   studentName varchar(20) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE Student
   UNIQUE(username)
 );
 
-CREATE TABLE Major
+CREATE TABLE major
 (
   majorId INT NOT NULL AUTO_INCREMENT,
   majorName varchar(20) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE Major
   UNIQUE (majorName)
 );
 
-CREATE TABLE Minor
+CREATE TABLE minor
 (
   minorId INT NOT NULL AUTO_INCREMENT,
   minorName varchar(20) NOT NULL,
@@ -25,25 +25,25 @@ CREATE TABLE Minor
   UNIQUE (minorName)
 );
 
-CREATE TABLE StudentMajor
+CREATE TABLE studentmajor
 (
   studentId INT,
   majorId INT,
-  FOREIGN KEY (studentId) REFERENCES Student(studentId) ON DELETE CASCADE,
-  FOREIGN KEY (majorId) REFERENCES Major(majorId) ON DELETE CASCADE,
+  FOREIGN KEY (studentId) REFERENCES student(studentId) ON DELETE CASCADE,
+  FOREIGN KEY (majorId) REFERENCES major(majorId) ON DELETE CASCADE,
   UNIQUE(studentId,majorId)
 );
 
-CREATE TABLE StudentMinor
+CREATE TABLE studentminor
 (
   studentId INT,
   minorId INT,
-  FOREIGN KEY (studentId) REFERENCES Student(studentId),
-  FOREIGN KEY (minorId) REFERENCES Minor(minorId),
+  FOREIGN KEY (studentId) REFERENCES student(studentId),
+  FOREIGN KEY (minorId) REFERENCES minor(minorId),
   UNIQUE(studentId,minorId)
 );
 
-CREATE TABLE Department
+CREATE TABLE department
 (
   departmentId INT NOT NULL AUTO_INCREMENT,
   departmentName varchar(50) NOT NULL,
@@ -53,17 +53,17 @@ CREATE TABLE Department
   UNIQUE (departmentCode)
 );
 
-CREATE TABLE Prefix
+CREATE TABLE prefix
 (
   prefixId INT NOT NULL AUTO_INCREMENT,
   prefixName varchar(10) NOT NULL,
   departmentId INT NOT NULL,
   PRIMARY KEY (prefixId),
-  FOREIGN KEY (departmentId) REFERENCES Department(departmentId) ON DELETE CASCADE,
+  FOREIGN KEY (departmentId) REFERENCES department(departmentId) ON DELETE CASCADE,
   UNIQUE (prefixName)
 );
 
-CREATE TABLE Course
+CREATE TABLE course
 (
   courseId INT NOT NULL AUTO_INCREMENT,
   prefixId INT NOT NULL,
@@ -71,38 +71,38 @@ CREATE TABLE Course
   hours INT NOT NULL,
   courseNum INT NOT NULL,
   PRIMARY KEY (courseId),
-  FOREIGN KEY (prefixId) REFERENCES Prefix(prefixId) ON DELETE CASCADE,
+  FOREIGN KEY (prefixId) REFERENCES prefix(prefixId) ON DELETE CASCADE,
   UNIQUE (prefixId,courseNum)
 );
 
-CREATE TABLE CoursePrereq
+CREATE TABLE courseprereq
 (
   courseId INT NOT NULL,
   preReqId INT NOT NULL,
-  FOREIGN KEY (courseId) REFERENCES Course(courseId) ON DELETE CASCADE,
-  FOREIGN KEY (preReqId) REFERENCES Course(courseId) ON DELETE CASCADE,
+  FOREIGN KEY (courseId) REFERENCES course(courseId) ON DELETE CASCADE,
+  FOREIGN KEY (preReqId) REFERENCES course(courseId) ON DELETE CASCADE,
   UNIQUE(courseId,preReqId)
 );
 
-CREATE TABLE CourseMajor
+CREATE TABLE coursemajor
 (
   courseId INT NOT NULL,
   majorId INT NOT NULL,
-  FOREIGN KEY (courseId) REFERENCES Course(courseId) ON DELETE CASCADE,
-  FOREIGN KEY (majorId) REFERENCES Major(majorId) ON DELETE CASCADE,
+  FOREIGN KEY (courseId) REFERENCES course(courseId) ON DELETE CASCADE,
+  FOREIGN KEY (majorId) REFERENCES major(majorId) ON DELETE CASCADE,
   UNIQUE(courseId,majorId)
 );
 
-CREATE TABLE CourseMinor
+CREATE TABLE courseminor
 (
   courseId INT NOT NULL,
   minorId INT NOT NULL,
-  FOREIGN KEY (courseId) REFERENCES Course(courseId) ON DELETE CASCADE,
-  FOREIGN KEY (minorId) REFERENCES Minor(minorId) ON DELETE CASCADE,
+  FOREIGN KEY (courseId) REFERENCES course(courseId) ON DELETE CASCADE,
+  FOREIGN KEY (minorId) REFERENCES minor(minorId) ON DELETE CASCADE,
   UNIQUE(courseId,minorId)
 );
 
-CREATE TABLE CourseRating
+CREATE TABLE courserating
 (
   courseRatingId INT NOT NULL AUTO_INCREMENT,
   studentId INT NOT NULL,
@@ -110,21 +110,21 @@ CREATE TABLE CourseRating
   rating INT NOT NULL,
   comments varchar(255) NOT NULL,
   PRIMARY KEY (courseRatingId),
-  FOREIGN KEY (studentId) REFERENCES Student(studentId) ON DELETE CASCADE,
-  FOREIGN KEY (courseId) REFERENCES Course(courseId) ON DELETE CASCADE,
+  FOREIGN KEY (studentId) REFERENCES student(studentId) ON DELETE CASCADE,
+  FOREIGN KEY (courseId) REFERENCES course(courseId) ON DELETE CASCADE,
   UNIQUE(studentId,courseId)
 );
 
-CREATE TABLE StudentCourse
+CREATE TABLE studentcourse
 (
   studentId INT NOT NULL,
   courseId INT NOT NULL,
-  FOREIGN KEY (studentId) REFERENCES Student(studentId) ON DELETE CASCADE,
-  FOREIGN KEY (courseId) REFERENCES Course(courseId) ON DELETE CASCADE,
+  FOREIGN KEY (studentId) REFERENCES student(studentId) ON DELETE CASCADE,
+  FOREIGN KEY (courseId) REFERENCES course(courseId) ON DELETE CASCADE,
   UNIQUE(studentId,courseId)
 );
 
-CREATE TABLE Section
+CREATE TABLE section
 (
   sectionId INT NOT NULL AUTO_INCREMENT,
   courseId INT NOT NULL,
@@ -137,31 +137,31 @@ CREATE TABLE Section
   sectionNum varchar(10) NOT NULL,
   callNum INT NOT NULL,
   PRIMARY KEY (sectionId),
-  FOREIGN KEY (courseId) REFERENCES Course(courseId) ON DELETE CASCADE,
+  FOREIGN KEY (courseId) REFERENCES course(courseId) ON DELETE CASCADE,
   UNIQUE (callNum),
   UNIQUE (courseId,sectionNum,startDate)
 );
 
-CREATE TABLE Schedule
+CREATE TABLE schedule
 (
   scheduleId INT NOT NULL AUTO_INCREMENT,
   studentId INT NOT NULL,
   scheduleName varchar(20) NOT NULL,
   PRIMARY KEY (scheduleId),
-  FOREIGN KEY (studentId) REFERENCES Student(studentId) ON DELETE CASCADE,
+  FOREIGN KEY (studentId) REFERENCES student(studentId) ON DELETE CASCADE,
   UNIQUE(studentId)
 );
 
-CREATE TABLE ScheduleSection
+CREATE TABLE schedulesection
 (
   scheduleId INT NOT NULL,
   sectionId INT NOT NULL,
-  FOREIGN KEY (scheduleId) REFERENCES Schedule(scheduleId) ON DELETE CASCADE,
-  FOREIGN KEY (sectionId) REFERENCES Section(sectionId) ON DELETE CASCADE,
+  FOREIGN KEY (scheduleId) REFERENCES schedule(scheduleId) ON DELETE CASCADE,
+  FOREIGN KEY (sectionId) REFERENCES section(sectionId) ON DELETE CASCADE,
   UNIQUE(scheduleId,sectionId)
 );
 
-CREATE TABLE Professor
+CREATE TABLE professor
 (
   professorId INT NOT NULL AUTO_INCREMENT,
   professorName varchar(20) NOT NULL,
@@ -169,16 +169,16 @@ CREATE TABLE Professor
   UNIQUE (professorName)
 );
 
-CREATE TABLE SectionProfessor
+CREATE TABLE sectionprofessor
 (
   professorId INT NOT NULL,
   sectionId INT NOT NULL,
-  FOREIGN KEY (professorId) REFERENCES Professor(professorId) ON DELETE CASCADE,
-  FOREIGN KEY (sectionId) REFERENCES Section(sectionId) ON DELETE CASCADE,
+  FOREIGN KEY (professorId) REFERENCES professor(professorId) ON DELETE CASCADE,
+  FOREIGN KEY (sectionId) REFERENCES section(sectionId) ON DELETE CASCADE,
   UNIQUE(professorId,sectionId)
 );
 
-CREATE TABLE ProfessorRating
+CREATE TABLE professorrating
 (
   professorRatingId INT NOT NULL AUTO_INCREMENT,
   studentId INT NOT NULL,
@@ -186,7 +186,7 @@ CREATE TABLE ProfessorRating
   rating INT NOT NULL,
   comments varchar(255) NOT NULL,
   PRIMARY KEY (professorRatingId),
-  FOREIGN KEY (studentId) REFERENCES Student(studentId) ON DELETE CASCADE,
-  FOREIGN KEY (professorId) REFERENCES Professor(professorId) ON DELETE CASCADE,
+  FOREIGN KEY (studentId) REFERENCES student(studentId) ON DELETE CASCADE,
+  FOREIGN KEY (professorId) REFERENCES professor(professorId) ON DELETE CASCADE,
   UNIQUE(studentId,professorId)
 );

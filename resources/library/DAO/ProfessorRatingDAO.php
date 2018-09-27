@@ -21,18 +21,7 @@ class ProfessorRatingDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $professorRating = new ProfessorRating();
-
-                $professorRating->setProfessorRating($row["rating"]);
-                $professorRating->setProfessorRatingId($row["professorRatingId"]);
-                $professorRating->setProfessorReview($row["comments"]);
-                $professorRating->setStudentId($row["studentId"]);
-                $professorRating->setProfessorId($row["professorId"]);
-
-                $professorRatings[] = $professorRating;
-            }
+            $professorRatings = $this->getProfessorRatingsFromResult($result);
         }
 
         $conn->close();
@@ -55,11 +44,7 @@ class ProfessorRatingDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $professorRating->setProfessorRating($row["rating"]);
-            $professorRating->setProfessorRatingId($row["professorRatingId"]);
-            $professorRating->setProfessorReview($row["comments"]);
-            $professorRating->setStudentId($row["studentId"]);
-            $professorRating->setProfessorId($row["professorId"]);
+            $professorRating = $this->getProfessorRatingFromRow($row);
         }
 
         $conn->close();
@@ -83,11 +68,7 @@ class ProfessorRatingDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $professorRating->setProfessorRating($row["rating"]);
-            $professorRating->setProfessorRatingId($row["professorRatingId"]);
-            $professorRating->setProfessorReview($row["comments"]);
-            $professorRating->setStudentId($row["studentId"]);
-            $professorRating->setProfessorId($row["professorId"]);
+            $professorRating = $this->getProfessorRatingFromRow($row);
         }
 
         $conn->close();
@@ -110,23 +91,37 @@ class ProfessorRatingDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $professorRating = new ProfessorRating();
-
-                $professorRating->setProfessorRating($row["rating"]);
-                $professorRating->setProfessorRatingId($row["professorRatingId"]);
-                $professorRating->setProfessorReview($row["comments"]);
-                $professorRating->setStudentId($row["studentId"]);
-                $professorRating->setProfessorId($row["professorId"]);
-
-                $professorRatings[] = $professorRating;
-            }
+            $professorRatings = $this->getProfessorRatingsFromResult($result);
         }
 
         $conn->close();
 
         return $professorRatings;
+    }
+
+    private function getProfessorRatingsFromResult(mysqli_result $result): array
+    {
+        $professorRatings = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $professorRatings[] = $this->getProfessorRatingFromRow($row);
+        }
+
+        return $professorRatings;
+    }
+
+    private function getProfessorRatingFromRow(array $row): ProfessorRating
+    {
+        $professorRating = new ProfessorRating();
+
+        $professorRating->setProfessorRating($row["rating"]);
+        $professorRating->setProfessorRatingId($row["professorRatingId"]);
+        $professorRating->setProfessorReview($row["comments"]);
+        $professorRating->setStudentId($row["studentId"]);
+        $professorRating->setProfessorId($row["professorId"]);
+
+        return $professorRating;
     }
 
     public function updateProfessorRating(ProfessorRating $professorRating): bool

@@ -22,18 +22,7 @@ class CourseRatingDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $courseRating = new CourseRating();
-
-                $courseRating->setCourseRating($row["rating"]);
-                $courseRating->setCourseRatingId($row["courseRatingId"]);
-                $courseRating->setCourseReview($row["comments"]);
-                $courseRating->setStudentId($row["studentId"]);
-                $courseRating->setCourseId($row["courseId"]);
-
-                $courseRatings[] = $courseRating;
-            }
+            $courseRatings = $this->getCourseRatingsFromResult($result);
         }
 
         $conn->close();
@@ -57,11 +46,7 @@ class CourseRatingDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $courseRating->setCourseRating($row["rating"]);
-            $courseRating->setCourseRatingId($row["courseRatingId"]);
-            $courseRating->setCourseReview($row["comments"]);
-            $courseRating->setStudentId($row["studentId"]);
-            $courseRating->setCourseId($row["courseId"]);
+            $courseRating = $this->getCourseRatingFromRow($row);
         }
 
         $conn->close();
@@ -86,11 +71,7 @@ class CourseRatingDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $courseRating->setCourseRating($row["rating"]);
-            $courseRating->setCourseRatingId($row["courseRatingId"]);
-            $courseRating->setCourseReview($row["comments"]);
-            $courseRating->setStudentId($row["studentId"]);
-            $courseRating->setCourseId($row["courseId"]);
+            $courseRating = $this->getCourseRatingFromRow($row);
         }
 
         $conn->close();
@@ -114,23 +95,37 @@ class CourseRatingDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $courseRating = new CourseRating();
-
-                $courseRating->setCourseRating($row["rating"]);
-                $courseRating->setCourseRatingId($row["courseRatingId"]);
-                $courseRating->setCourseReview($row["comments"]);
-                $courseRating->setStudentId($row["studentId"]);
-                $courseRating->setCourseId($row["courseId"]);
-
-                $courseRatings[] = $courseRating;
-            }
+            $courseRatings = $this->getCourseRatingsFromResult($result);
         }
 
         $conn->close();
 
         return $courseRatings;
+    }
+
+    private function getCourseRatingsFromResult(mysqli_result $result): array
+    {
+        $courseRatings = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $courses[] = $this->getCourseRatingFromRow($row);
+        }
+
+        return $courseRatings;
+    }
+
+    private function getCourseRatingFromRow(array $row): CourseRating
+    {
+        $courseRating = new CourseRating();
+
+        $courseRating->setCourseRating($row["rating"]);
+        $courseRating->setCourseRatingId($row["courseRatingId"]);
+        $courseRating->setCourseReview($row["comments"]);
+        $courseRating->setStudentId($row["studentId"]);
+        $courseRating->setCourseId($row["courseId"]);
+
+        return $courseRating;
     }
 
     public function updateCourseRating(CourseRating $courseRating): bool

@@ -22,17 +22,7 @@ class ScheduleDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $schedule = new schedule();
-
-                $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["scheduleId"]));
-                $schedule->setScheduleId($row["scheduleId"]);
-                $schedule->setScheduleName($row["scheduleName"]);
-                $schedule->setStudentId($row["studentId"]);
-
-                $schedules[] = $schedule;
-            }
+            $schedules = $this->getSchedulesFromResult($result);
         }
 
         $conn->close();
@@ -55,10 +45,7 @@ class ScheduleDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["scheduleId"]));
-            $schedule->setScheduleId($row["scheduleId"]);
-            $schedule->setScheduleName($row["scheduleName"]);
-            $schedule->setStudentId($row["studentId"]);
+            $schedule = $this->getScheduleFromRow($row);
         }
 
         $conn->close();
@@ -81,13 +68,34 @@ class ScheduleDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["scheduleId"]));
-            $schedule->setScheduleId($row["scheduleId"]);
-            $schedule->setScheduleName($row["scheduleName"]);
-            $schedule->setStudentId($row["studentId"]);
+            $schedule = $this->getScheduleFromRow($row);
         }
 
         $conn->close();
+
+        return $schedule;
+    }
+
+    private function getSchedulesFromResult(mysqli_result $result): array
+    {
+        $schedules = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $schedules[] = $this->getScheduleFromRow($row);
+        }
+
+        return $schedules;
+    }
+
+    private function getScheduleFromRow(array $row): Schedule
+    {
+        $schedule = new Schedule();
+
+        $schedule->setSections((new SectionDAO())->getSectionsFromScheduleId($row["scheduleId"]));
+        $schedule->setScheduleId($row["scheduleId"]);
+        $schedule->setScheduleName($row["scheduleName"]);
+        $schedule->setStudentId($row["studentId"]);
 
         return $schedule;
     }
@@ -163,7 +171,7 @@ class ScheduleDAO
 
         foreach ($schedule->getSections() as $section)
         {
-            $pst->bind_param("ii",$schedule->getScheduleId(),$section->getSectionId());
+            $pst->bind_param("ii",$schedule->getScheduleId(), $section->getSectionId());
             $result &= $pst->execute();
         }
 

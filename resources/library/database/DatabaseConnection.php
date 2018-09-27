@@ -9,9 +9,9 @@
 class DatabaseConnection
 {
     var $servername = "localhost";
-    var $databaseName = "TamucScheduleTool";
-    var $username = "root";
-    var $password = "";
+    var $databaseName = "id3548748_tamucscheduletooldb";
+    var $username = "id3548748_hunter";
+    var $password = "TamucSchedule2018440";
 
     function getConnection()
     {

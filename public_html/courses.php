@@ -24,32 +24,56 @@ include_once ("common/header.php");
                 <label class="mr-4">Available Courses</label>
             </form>
         </div>
-        <div class="card-body">
+        <div class="card-body" class="mainContent">
             <form accept-charset="UTF-8" role="form">
-                <input type="hidden" name="type" value="Course">
-                <input type="hidden" name="action" value="Delete">
-                <ul class="list-group list-group-flush">
                     <?php
                     foreach ($departments as $department)
                     {
                         echo('<div class="card mt-2">');
                             echo('<div class="card-header">');
-                                echo('<li class="list-group-item">');
-                                    echo($department->getDepartmentName());
-                                echo('</li>');
+                                    echo("<a class='department' href='#' onclick='loadPrefixes(".$department->getDepartmentId().")'>".$department->getDepartmentName()."</a>");
                             echo('</div>');
-                            echo('<div id="'.$department->getDepartmentId().'">');
+                            echo('<div id="department_'.$department->getDepartmentId().'">');
                             echo('</div>');
 
                         echo('</div>');
                     }
                     ?>
-                </ul>
             </form>
         </div>
     </div>
 
 </main>
+
+<script>
+
+    function loadPrefixes(departmentId)
+    {
+        $.ajax({url: "prefixes.php",
+            data: {
+                "id" : departmentId
+            },
+            success: function(result){
+                var divId = "#department_" + departmentId;
+                $(divId).html(result);
+            }});
+    }
+
+    function loadCourses(prefixId)
+    {
+        $.ajax({url: "courseList.php",
+            data: {
+                "id" : prefixId
+            },
+            success: function(result){
+                var divId = "#prefix_" + prefixId;
+                $(divId).html(result);
+            }});
+    }
+
+
+</script>
+
 </body>
 
 </html>

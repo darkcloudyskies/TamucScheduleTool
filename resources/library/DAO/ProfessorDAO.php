@@ -22,16 +22,7 @@ class ProfessorDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $professor = new professor();
-
-                $professor->setProfessorId($row["professorId"]);
-                $professor->setProfessorName($row["professorName"]);
-                $professor->setProfessorRatings((new ProfessorRatingDAO())->getProfessorRatingsFromProfessorId($row["professorId"]));
-
-                $professors[] = $professor;
-            }
+            $professors = $this->getProfessorFromResult($result);
         }
 
         $conn->close();
@@ -54,9 +45,7 @@ class ProfessorDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $professor->setProfessorId($row["professorId"]);
-            $professor->setProfessorName($row["professorName"]);
-            $professor->setProfessorRatings((new ProfessorRatingDAO())->getProfessorRatingsFromProfessorId($row["professorId"]));
+            $professor = $this->getProfessorFromRow($row);
         }
 
         $conn->close();
@@ -79,9 +68,7 @@ class ProfessorDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $professor->setProfessorId($row["professorId"]);
-            $professor->setProfessorName($row["professorName"]);
-            $professor->setProfessorRatings((new ProfessorRatingDAO())->getProfessorRatingsFromProfessorId($row["professorId"]));
+            $professor = $this->getProfessorFromRow($row);
         }
 
         $conn->close();
@@ -106,21 +93,35 @@ class ProfessorDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $professor = new professor();
-
-                $professor->setProfessorId($row["professorId"]);
-                $professor->setProfessorName($row["professorName"]);
-                $professor->setProfessorRatings((new ProfessorRatingDAO())->getProfessorRatingsFromProfessorId($row["professorId"]));
-
-                $professors[] = $professor;
-            }
+            $professors = $this->getProfessorFromResult($result);
         }
 
         $conn->close();
 
         return $professors;
+    }
+
+    private function getProfessorFromResult(mysqli_result $result): array
+    {
+        $professors = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $professors[] = $this->getProfessorFromRow($row);
+        }
+
+        return $professors;
+    }
+
+    private function getProfessorFromRow(array $row): Professor
+    {
+        $professor = new Professor();
+
+        $professor->setProfessorId($row["professorId"]);
+        $professor->setProfessorName($row["professorName"]);
+        $professor->setProfessorRatings((new ProfessorRatingDAO())->getProfessorRatingsFromProfessorId($row["professorId"]));
+
+        return $professor;
     }
 
     public function updateProfessor(Professor $professor): bool

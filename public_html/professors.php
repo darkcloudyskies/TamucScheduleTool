@@ -6,13 +6,13 @@
  * Time: 5:16 PM
  */
 
-require_once "../resources/library/DAO/MajorDAO.php";
-require_once "../resources/library/POPO/Major.php";
+require_once "../resources/library/DAO/ProfessorDAO.php";
+require_once "../resources/library/POPO/Professor.php";
 
 include_once ("common/loginCheck.php");
 
-$majorDAO = new MajorDAO();
-$majors = $majorDAO->getAllMajors();
+$professorDAO = new ProfessorDAO();
+$professors = $professorDAO->getAllProfessors();
 include_once ("common/header.php");
 
 ?>
@@ -21,18 +21,19 @@ include_once ("common/header.php");
     <div class="card mt-2">
         <div class="card-header">
             <form class="form-inline my-2 my-lg-0">
-                <label class="mr-4">Available Majors</label>
+                <label class="mr-4">Profesors</label>
             </form>
         </div>
         <div class="card-body">
             <form accept-charset="UTF-8" role="form">
+                <input type="hidden" name="type" value="Course">
+                <input type="hidden" name="action" value="Delete">
                 <ul class="list-group list-group-flush">
                     <?php
-                    foreach ($majors as $major)
+                    foreach ($professors as $professor)
                     {
                         echo('<li class="list-group-item">');
-                        echo($major->getMajorName());
-                        echo('<button type="submit" class="btn btn-outline-success float-right" name="majorId" value="'.$major->getMajorId().'">Add Major</button>');
+                        echo("<a class='professor' href='#' data-id='".$professor->getProfessorId()."'>".$professor->getProfessorName()."</a>");
                         echo('</li>');
                     }
                     ?>
@@ -42,6 +43,9 @@ include_once ("common/header.php");
     </div>
 
 </main>
+
+
+
 </body>
 
 </html>

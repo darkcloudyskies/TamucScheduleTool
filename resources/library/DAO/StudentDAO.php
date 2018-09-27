@@ -25,21 +25,7 @@ class StudentDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $student = new student();
-
-                $student->setMajors((new MajorDAO())->getMajorsFromStudentId($row["studentId"]));
-                $student->setMinors((new MinorDAO())->getMinorsFromStudentId($row["studentId"]));
-                $student->setPassword($row["password"]);
-                $student->setSchedule((new ScheduleDAO)->getScheduleFromStudentId($row["studentId"]));
-                $student->setStudentId($row["studentId"]);
-                $student->setStudentName($row["studentName"]);
-                $student->setUsername($row["username"]);
-                $student->setCoursesTaken((new CourseDAO())->getCoursesFromStudentId($row["studentId"]));
-
-                $students[] = $student;
-            }
+            $students = $this->getStudentsFromResult($result);
         }
 
         $conn->close();
@@ -62,14 +48,7 @@ class StudentDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $student->setMajors((new MajorDAO())->getMajorsFromStudentId($row["studentId"]));
-            $student->setMinors((new MinorDAO())->getMinorsFromStudentId($row["studentId"]));
-            $student->setPassword($row["password"]);
-            $student->setSchedule((new ScheduleDAO)->getScheduleFromStudentId($row["studentId"]));
-            $student->setStudentId($row["studentId"]);
-            $student->setStudentName($row["studentName"]);
-            $student->setUsername($row["username"]);
-            $student->setCoursesTaken((new CourseDAO())->getCoursesFromStudentId($row["studentId"]));
+            $student = $this->getStudentFromRow($row);
         }
 
         $conn->close();
@@ -92,17 +71,38 @@ class StudentDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $student->setMajors((new MajorDAO())->getMajorsFromStudentId($row["studentId"]));
-            $student->setMinors((new MinorDAO())->getMinorsFromStudentId($row["studentId"]));
-            $student->setPassword($row["password"]);
-            $student->setSchedule((new ScheduleDAO)->getScheduleFromStudentId($row["studentId"]));
-            $student->setStudentId($row["studentId"]);
-            $student->setStudentName($row["studentName"]);
-            $student->setUsername($row["username"]);
-            $student->setCoursesTaken((new CourseDAO())->getCoursesFromStudentId($row["studentId"]));
+            $student = $this->getStudentFromRow($row);
         }
 
         $conn->close();
+
+        return $student;
+    }
+
+    private function getStudentsFromResult(mysqli_result $result): array
+    {
+        $students = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $students[] = $this->getStudentFromRow($row);
+        }
+
+        return $students;
+    }
+
+    private function getStudentFromRow(array $row): Student
+    {
+        $student = new Student();
+
+        $student->setMajors((new MajorDAO())->getMajorsFromStudentId($row["studentId"]));
+        $student->setMinors((new MinorDAO())->getMinorsFromStudentId($row["studentId"]));
+        $student->setPassword($row["password"]);
+        $student->setSchedule((new ScheduleDAO)->getScheduleFromStudentId($row["studentId"]));
+        $student->setStudentId($row["studentId"]);
+        $student->setStudentName($row["studentName"]);
+        $student->setUsername($row["username"]);
+        $student->setCoursesTaken((new CourseDAO())->getCoursesFromStudentId($row["studentId"]));
 
         return $student;
     }
@@ -193,7 +193,14 @@ class StudentDAO
                 VALUES (?,?,?)";
 
         $conn = (new DatabaseConnection())->getConnection();
-        $pst = $conn->prepare($sql);
+        if($pst = $conn->prepare($sql))
+        {
+
+        }
+        else {
+            $error = $conn->errno . ' ' . $conn->error;
+            echo $error; // 1054 Unknown column 'foo' in 'field list'
+        }
 
         $pst->bind_param("sss",$student->getStudentName(),$student->getUsername(),$student->getPassword());
 

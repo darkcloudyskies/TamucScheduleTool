@@ -22,16 +22,7 @@ class MajorDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $major = new major();
-
-                $major->setCourses((new CourseDAO())->getCoursesFromMajorId($row["majorId"]));
-                $major->setMajorId($row["majorId"]);
-                $major->setMajorName($row["majorName"]);
-
-                $majors[] = $major;
-            }
+            $majors = $this->getMajorsFromResult($result);
         }
 
         $conn->close();
@@ -41,7 +32,7 @@ class MajorDAO
 
     public function getMajorFromId(int $majorId): Major
     {
-        $major = new major();
+        $major = new Major();
 
         $sql = "SELECT * FROM major
                 WHERE majorId = ?";
@@ -54,9 +45,7 @@ class MajorDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $major->setCourses((new CourseDAO())->getCoursesFromMajorId($row["majorId"]));
-            $major->setMajorId($row["majorId"]);
-            $major->setMajorName($row["majorName"]);
+            $major = $this->getMajorFromRow($row);
         }
 
         $conn->close();
@@ -66,7 +55,7 @@ class MajorDAO
 
     public function getMajorFromName(String $majorName): Major
     {
-        $major = new major();
+        $major = new Major();
 
         $sql = "SELECT * FROM major
                 WHERE majorName = ?";
@@ -79,9 +68,7 @@ class MajorDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $major->setCourses((new CourseDAO())->getCoursesFromMajorId($row["majorId"]));
-            $major->setMajorId($row["majorId"]);
-            $major->setMajorName($row["majorName"]);
+            $major = $this->getMajorFromRow($row);
         }
 
         $conn->close();
@@ -106,21 +93,35 @@ class MajorDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $major = new major();
-
-                $major->setCourses((new CourseDAO())->getCoursesFromMajorId($row["majorId"]));
-                $major->setMajorId($row["majorId"]);
-                $major->setMajorName($row["majorName"]);
-
-                $majors[] = $major;
-            }
+            $majors = $this->getMajorsFromResult($result);
         }
 
         $conn->close();
 
         return $majors;
+    }
+
+    private function getMajorsFromResult(mysqli_result $result): array
+    {
+        $majors = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $majors[] = $this->getMajorFromRow($row);
+        }
+
+        return $majors;
+    }
+
+    private function getMajorFromRow(array $row): Major
+    {
+        $major = new Major();
+
+        $major->setCourses((new CourseDAO())->getCoursesFromMajorId($row["majorId"]));
+        $major->setMajorId($row["majorId"]);
+        $major->setMajorName($row["majorName"]);
+
+        return $major;
     }
 
     public function updateMajor(Major $major): bool

@@ -22,15 +22,9 @@ class PrefixDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
+            if($result->num_rows > 0)
             {
-                $prefix = new prefix();
-
-                $prefix->setPrefixId($row["prefixId"]);
-                $prefix->setPrefixName($row["prefixName"]);
-                $prefix->setDepartment((new DepartmentDAO())->getDepartmentFromId($row["departmentId"]));
-
-                $prefixes[] = $prefix;
+                $prefixes = $this->getPrefixesFromResult($result);
             }
         }
 
@@ -54,15 +48,36 @@ class PrefixDAO
 
     if($result->num_rows > 0 && $row = $result->fetch_assoc())
     {
-        $prefix->setPrefixId($row["prefixId"]);
-        $prefix->setPrefixName($row["prefixName"]);
-        $prefix->setDepartment((new DepartmentDAO())->getDepartmentFromId($row["departmentId"]));
+        $prefix = $this->getPrefixFromRow($row);
     }
 
     $conn->close();
 
     return $prefix;
 }
+
+    public function getPrefixesFromDepartmentId(int $departmentId): array
+    {
+        $prefixes = array();
+
+        $sql = "SELECT * FROM prefix
+                WHERE departmentId = ?";
+
+        $conn = (new DatabaseConnection())->getConnection();
+        $pst = $conn->prepare($sql);
+        $pst->bind_param("i",$departmentId);
+        $pst->execute();
+        $result = $pst->get_result();
+
+        if($result->num_rows > 0)
+        {
+            $prefixes = $this->getPrefixesFromResult($result);
+        }
+
+        $conn->close();
+
+        return $prefixes;
+    }
 
     public function getPrefixFromName(string $prefixName): Prefix
     {
@@ -79,14 +94,35 @@ class PrefixDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $prefix->setPrefixId($row["prefixId"]);
-            $prefix->setPrefixName($row["prefixName"]);
-            $prefix->setDepartment((new DepartmentDAO())->getDepartmentFromId($row["departmentId"]));
+            $prefix = $this->getPrefixFromRow($row);
         }
 
         $conn->close();
 
         return $prefix;
+    }
+
+    private function getPrefixesFromResult(mysqli_result $result): array
+    {
+        $prefixes = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $prefixes[] = $this->getPrefixFromRow($row);
+        }
+
+        return $prefixes;
+    }
+
+    private function getPrefixFromRow(array $row): Prefix
+    {
+        $prefix = new Prefix();
+
+        $prefix->setPrefixId($row["prefixId"]);
+        $prefix->setPrefixName($row["prefixName"]);
+        $prefix->setDepartment((new DepartmentDAO())->getDepartmentFromId($row["departmentId"]));
+
+        return $$prefix;
     }
 
     public function updatePrefix(Prefix $prefix): bool

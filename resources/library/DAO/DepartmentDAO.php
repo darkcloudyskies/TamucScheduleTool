@@ -23,13 +23,7 @@ class DepartmentDAO
         {
             while($row = $result->fetch_assoc())
             {
-                $department = new Department();
-
-                $department->setDepartmentCode($row["departmentCode"]);
-                $department->setDepartmentId($row["departmentId"]);
-                $department->setDepartmentName($row["departmentName"]);
-
-                $departments[] = $department;
+                $departments = $this->getDepartmentsFromResult($result);
             }
         }
 
@@ -53,9 +47,7 @@ class DepartmentDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $department->setDepartmentCode($row["departmentCode"]);
-            $department->setDepartmentId($row["departmentId"]);
-            $department->setDepartmentName($row["departmentName"]);
+            $department = $this->getDepartmentFromRow($row);
         }
 
         $conn->close();
@@ -78,9 +70,7 @@ class DepartmentDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $department->setDepartmentCode($row["departmentCode"]);
-            $department->setDepartmentId($row["departmentId"]);
-            $department->setDepartmentName($row["departmentName"]);
+            $department = $this->getDepartmentFromRow($row);
         }
 
         $conn->close();
@@ -103,12 +93,33 @@ class DepartmentDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $department->setDepartmentCode($row["departmentCode"]);
-            $department->setDepartmentId($row["departmentId"]);
-            $department->setDepartmentName($row["departmentName"]);
+            $department = $this->getDepartmentFromRow($row);
         }
 
         $conn->close();
+
+        return $department;
+    }
+
+    private function getDepartmentsFromResult(mysqli_result $result): array
+    {
+        $departments = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $departments[] = $this->getDepartmentFromRow($row);
+        }
+
+        return $departments;
+    }
+
+    private function getDepartmentFromRow(array $row): Department
+    {
+        $department = new Department();
+
+        $department->setDepartmentCode($row["departmentCode"]);
+        $department->setDepartmentId($row["departmentId"]);
+        $department->setDepartmentName($row["departmentName"]);
 
         return $department;
     }

@@ -23,24 +23,7 @@ class SectionDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $section = new section();
-
-                $section->setCallNum($row["callNum"]);
-                $section->setCourse((new CourseDAO())->getCourseFromId($row["courseId"]));
-                $section->setEndDate($row["endDate"]);
-                $section->setEndTime($row["endTime"]);
-                $section->setLocation($row["location"]);
-                $section->setProfessors((new ProfessorDAO())->getProfessorsFromSectionId($row["sectionId"]));
-                $section->setSectionId($row["sectionId"]);
-                $section->setSectionNum($row["sectionNum"]);
-                $section->setStartDate($row["startDate"]);
-                $section->setStartTime($row["startTime"]);
-                $section->setWeekDays($row["weekDays"]);
-
-                $sections[] = $section;
-            }
+            $this->getSectionsFromResult($result);
         }
 
         $conn->close();
@@ -63,17 +46,7 @@ class SectionDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $section->setCallNum($row["callNum"]);
-            $section->setCourse((new CourseDAO())->getCourseFromId($row["courseId"]));
-            $section->setEndDate($row["endDate"]);
-            $section->setEndTime($row["endTime"]);
-            $section->setLocation($row["location"]);
-            $section->setProfessors((new ProfessorDAO())->getProfessorsFromSectionId($row["sectionId"]));
-            $section->setSectionId($row["sectionId"]);
-            $section->setSectionNum($row["sectionNum"]);
-            $section->setStartDate($row["startDate"]);
-            $section->setStartTime($row["startTime"]);
-            $section->setWeekDays($row["weekDays"]);
+            $section = $this->getSectionFromRow($row);
         }
 
         $conn->close();
@@ -96,17 +69,7 @@ class SectionDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $section->setCallNum($row["callNum"]);
-            $section->setCourse((new CourseDAO())->getCourseFromId($row["courseId"]));
-            $section->setEndDate($row["endDate"]);
-            $section->setEndTime($row["endTime"]);
-            $section->setLocation($row["location"]);
-            $section->setProfessors((new ProfessorDAO())->getProfessorsFromSectionId($row["sectionId"]));
-            $section->setSectionId($row["sectionId"]);
-            $section->setSectionNum($row["sectionNum"]);
-            $section->setStartDate($row["startDate"]);
-            $section->setStartTime($row["startTime"]);
-            $section->setWeekDays($row["weekDays"]);
+            $section = $this->getSectionFromRow($row);
         }
 
         $conn->close();
@@ -131,29 +94,43 @@ class SectionDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $section = new Section();
-
-                $section->setCallNum($row["callNum"]);
-                $section->setCourse((new CourseDAO())->getCourseFromId($row["courseId"]));
-                $section->setEndDate($row["endDate"]);
-                $section->setEndTime($row["endTime"]);
-                $section->setLocation($row["location"]);
-                $section->setProfessors((new ProfessorDAO())->getProfessorsFromSectionId($row["sectionId"]));
-                $section->setSectionId($row["sectionId"]);
-                $section->setSectionNum($row["sectionNum"]);
-                $section->setStartDate($row["startDate"]);
-                $section->setStartTime($row["startTime"]);
-                $section->setWeekDays($row["weekDays"]);
-
-                $sections[] = $section;
-            }
+            $this->getSectionsFromResult($result);
         }
 
         $conn->close();
 
         return $sections;
+    }
+
+    private function getSectionsFromResult(mysqli_result $result): array
+    {
+        $sections = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $sections[] = $this->getSectionFromRow($row);
+        }
+
+        return $sections;
+    }
+
+    private function getSectionFromRow(array $row): Section
+    {
+        $section = new Section();
+
+        $section->setCallNum($row["callNum"]);
+        $section->setCourse((new CourseDAO())->getCourseFromId($row["courseId"]));
+        $section->setEndDate($row["endDate"]);
+        $section->setEndTime($row["endTime"]);
+        $section->setLocation($row["location"]);
+        $section->setProfessors((new ProfessorDAO())->getProfessorsFromSectionId($row["sectionId"]));
+        $section->setSectionId($row["sectionId"]);
+        $section->setSectionNum($row["sectionNum"]);
+        $section->setStartDate($row["startDate"]);
+        $section->setStartTime($row["startTime"]);
+        $section->setWeekDays($row["weekDays"]);
+
+        return $section;
     }
 
     public function updateSection(Section $section): bool

@@ -12,6 +12,8 @@ require_once __DIR__.'/CourseRatingDAO.php';
 
 class CourseDAO
 {
+
+
     public function getAllCourses(): array
     {
         $courses = array();
@@ -23,20 +25,7 @@ class CourseDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $course = new Course();
-
-                $course->setCourseId($row["courseId"]);
-                $course->setCourseName($row["courseName"]);
-                $course->setCourseNum($row["courseNum"]);
-                $course->setCourseRatings((new CourseRatingDAO())->getCourseRatingsFromCourseId($row["courseId"]));
-                $course->setHours($row["hours"]);
-                $course->setPrefix((new PrefixDAO())->getPrefixFromId($row["prefixId"]));
-                $course->setCoursePrereqs($this->getCoursePrereqFromId($row{"courseId"}));
-
-                $courses[] = $course;
-            }
+            $courses = $this->getCoursesFromResult($result);
         }
 
         $conn->close();
@@ -45,33 +34,27 @@ class CourseDAO
     }
 
     public function getCourseFromId(int $courseId): Course
-{
-    $course = new Course();
-
-    $sql = "SELECT * FROM course
-                WHERE courseId = ?";
-
-    $conn = (new DatabaseConnection())->getConnection();
-    $pst = $conn->prepare($sql);
-    $pst->bind_param("i",$courseId);
-    $pst->execute();
-    $result = $pst->get_result();
-
-    if($result->num_rows > 0 && $row = $result->fetch_assoc())
     {
-        $course->setCourseId($row["courseId"]);
-        $course->setCourseName($row["courseName"]);
-        $course->setCourseNum($row["courseNum"]);
-        $course->setCourseRatings((new CourseRatingDAO())->getCourseRatingsFromCourseId($row["courseId"]));
-        $course->setHours($row["hours"]);
-        $course->setPrefix((new PrefixDAO())->getPrefixFromId($row["prefixId"]));
-        $course->setCoursePrereqs($this->getCoursePrereqFromId($row{"courseId"}));
+        $course = new Course();
+
+        $sql = "SELECT * FROM course
+                    WHERE courseId = ?";
+
+        $conn = (new DatabaseConnection())->getConnection();
+        $pst = $conn->prepare($sql);
+        $pst->bind_param("i",$courseId);
+        $pst->execute();
+        $result = $pst->get_result();
+
+        if($result->num_rows > 0 && $row = $result->fetch_assoc())
+        {
+            $course = $this->getCourseFromRow($row);
+        }
+
+        $conn->close();
+
+        return $course;
     }
-
-    $conn->close();
-
-    return $course;
-}
 
     public function getCourseFromPrefixAndCourseNum(int $prefixId,int $courseNum): Course
     {
@@ -89,13 +72,7 @@ class CourseDAO
 
         if($result->num_rows > 0 && $row = $result->fetch_assoc())
         {
-            $course->setCourseId($row["courseId"]);
-            $course->setCourseName($row["courseName"]);
-            $course->setCourseNum($row["courseNum"]);
-            $course->setCourseRatings((new CourseRatingDAO())->getCourseRatingsFromCourseId($row["courseId"]));
-            $course->setHours($row["hours"]);
-            $course->setPrefix((new PrefixDAO())->getPrefixFromId($row["prefixId"]));
-            $course->setCoursePrereqs($this->getCoursePrereqFromId($row{"courseId"}));
+            $course = $this->getCourseFromRow($row);
         }
 
         $conn->close();
@@ -123,19 +100,37 @@ class CourseDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
+            if($result->num_rows > 0)
             {
-                $course = new Course();
+                $courses = $this->getCoursesFromResult($result);
+            }
+        }
 
-                $course->setCourseId($row["courseId"]);
-                $course->setCourseName($row["courseName"]);
-                $course->setCourseNum($row["courseNum"]);
-                $course->setCourseRatings((new CourseRatingDAO())->getCourseRatingsFromCourseId($row["courseId"]));
-                $course->setHours($row["hours"]);
-                $course->setPrefix((new PrefixDAO())->getPrefixFromId($row["prefixId"]));
-                $course->setCoursePrereqs($this->getCoursePrereqFromId($row{"courseId"}));
+        $conn->close();
 
-                $courses[] = $course;
+        return $courses;
+    }
+
+    public function getCoursesFromPrefixId(int $prefixId): array
+    {
+        $courses = array();
+
+        $sql = "SELECT *
+                FROM course
+                WHERE prefixId = ?";
+
+
+        $conn = (new DatabaseConnection())->getConnection();
+        $pst = $conn->prepare($sql);
+        $pst->bind_param("i",$prefixId);
+        $pst->execute();
+        $result = $pst->get_result();
+
+        if($result->num_rows > 0)
+        {
+            if($result->num_rows > 0)
+            {
+                $courses = $this->getCoursesFromResult($result);
             }
         }
 
@@ -163,19 +158,9 @@ class CourseDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
+            if($result->num_rows > 0)
             {
-                $course = new Course();
-
-                $course->setCourseId($row["courseId"]);
-                $course->setCourseName($row["courseName"]);
-                $course->setCourseNum($row["courseNum"]);
-                $course->setCourseRatings((new CourseRatingDAO())->getCourseRatingsFromCourseId($row["courseId"]));
-                $course->setHours($row["hours"]);
-                $course->setPrefix((new PrefixDAO())->getPrefixFromId($row["prefixId"]));
-                $course->setCoursePrereqs($this->getCoursePrereqFromId($row{"courseId"}));
-
-                $courses[] = $course;
+                $courses = $this->getCoursesFromResult($result);
             }
         }
 
@@ -203,19 +188,9 @@ class CourseDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
+            if($result->num_rows > 0)
             {
-                $course = new Course();
-
-                $course->setCourseId($row["courseId"]);
-                $course->setCourseName($row["courseName"]);
-                $course->setCourseNum($row["courseNum"]);
-                $course->setCourseRatings((new CourseRatingDAO())->getCourseRatingsFromCourseId($row["courseId"]));
-                $course->setHours($row["hours"]);
-                $course->setPrefix((new PrefixDAO())->getPrefixFromId($row["prefixId"]));
-                $course->setCoursePrereqs($this->getCoursePrereqFromId($row{"courseId"}));
-
-                $courses[] = $course;
+                $courses = $this->getCoursesFromResult($result);
             }
         }
 
@@ -243,25 +218,39 @@ class CourseDAO
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $course = new Course();
-
-                $course->setCourseId($row["courseId"]);
-                $course->setCourseName($row["courseName"]);
-                $course->setCourseNum($row["courseNum"]);
-                $course->setCourseRatings((new CourseRatingDAO())->getCourseRatingsFromCourseId($row["courseId"]));
-                $course->setHours($row["hours"]);
-                $course->setPrefix((new PrefixDAO())->getPrefixFromId($row["prefixId"]));
-                $course->setCoursePrereqs($this->getCoursePrereqFromId($row{"courseId"}));
-
-                $courses[] = $course;
-            }
+            $courses = $this->getCoursesFromResult($result);
         }
 
         $conn->close();
 
         return $courses;
+    }
+
+    private function getCoursesFromResult(mysqli_result $result): array
+    {
+        $courses = array();
+
+        while($row = $result->fetch_assoc())
+        {
+            $courses[] = $this->getCourseFromRow($row);
+        }
+
+        return $courses;
+    }
+
+    private function getCourseFromRow(array $row): Course
+    {
+        $course = new Course();
+
+        $course->setCourseId($row["courseId"]);
+        $course->setCourseName($row["courseName"]);
+        $course->setCourseNum($row["courseNum"]);
+        $course->setCourseRatings((new CourseRatingDAO())->getCourseRatingsFromCourseId($row["courseId"]));
+        $course->setHours($row["hours"]);
+        $course->setPrefix((new PrefixDAO())->getPrefixFromId($row["prefixId"]));
+        $course->setCoursePrereqs($this->getCoursePrereqFromId($row{"courseId"}));
+
+        return $course;
     }
 
     public function updateCourse(Course $course): bool
