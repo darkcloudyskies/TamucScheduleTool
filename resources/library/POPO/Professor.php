@@ -10,7 +10,7 @@ require_once __DIR__.'/ProfessorRating.php';
 
 class Professor implements JsonSerializable
 {
-    private $professorId;
+    private $professorId = -1;
     private $professorName;
 
     private $professorRatings = array();

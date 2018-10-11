@@ -8,11 +8,34 @@
 
 require_once "../resources/library/DAO/MajorDAO.php";
 require_once "../resources/library/POPO/Major.php";
+require_once "../resources/library/DAO/StudentDAO.php";
+require_once "../resources/library/POPO/Student.php";
 
 include_once ("common/loginCheck.php");
 
 $majorDAO = new MajorDAO();
+
+
+if (!empty($_GET))
+{
+    $studentDAO = new StudentDAO();
+    $student = $studentDAO->getStudentFromUsername($_SESSION['user_id']);
+
+
+    $major = $majorDAO->getMajorFromId($_GET["majorId"]);
+
+    $majors = $student->getMajors();
+    $majors[] = $major;
+
+    $student->setMajors($majors);
+    $studentDAO->updateStudent($student);
+
+    header("Location: account.php");
+    exit();
+}
+
 $majors = $majorDAO->getAllMajors();
+
 include_once ("common/header.php");
 
 ?>

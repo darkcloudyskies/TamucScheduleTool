@@ -53,7 +53,7 @@ class ProfessorDAO
         return $professor;
     }
 
-    public function getProfessorFromName(int $professorName): Professor
+    public function getProfessorFromName(string $professorName): Professor
     {
         $professor = new Professor();
 

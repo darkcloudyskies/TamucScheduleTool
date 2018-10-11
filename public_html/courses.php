@@ -9,12 +9,32 @@
 require_once "../resources/library/DAO/DepartmentDAO.php";
 require_once "../resources/library/POPO/Department.php";
 
+require_once "../resources/library/DAO/CourseDAO.php";
+require_once "../resources/library/POPO/Course.php";
+
+require_once "../resources/library/DAO/StudentDAO.php";
+require_once "../resources/library/POPO/Student.php";
+
 include_once ("common/loginCheck.php");
 
 $departmentDAO = new DepartmentDAO();
 $departments = $departmentDAO->getAllDepartments();
-include_once ("common/header.php");
 
+$studentDAO = new StudentDAO();
+$student = $studentDAO->getStudentFromUsername($_SESSION['user_id']);
+
+if (!empty($_GET["courseId"]))
+{
+    $courseDAO = new CourseDAO();
+    $course = $courseDAO->getCourseFromId($_GET["courseId"]);
+
+    $courses[] = $course;
+
+    $student->setCoursesTaken($courses);
+    $studentDAO->updateStudent($student);
+}
+
+include_once ("common/header.php");
 ?>
 
 <main role="main" class="container mt-2 ">
@@ -68,6 +88,18 @@ include_once ("common/header.php");
             success: function(result){
                 var divId = "#prefix_" + prefixId;
                 $(divId).html(result);
+            }});
+    }
+
+    function addCourse(courseId)
+    {
+        $.ajax({url: "courses.php",
+            data: {
+                "type" : "addCourse",
+                "courseId" : courseId
+            },
+            success: function(result){
+                $(".courseId").disabled = true;
             }});
     }
 

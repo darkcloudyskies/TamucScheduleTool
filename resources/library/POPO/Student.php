@@ -13,7 +13,7 @@ require_once __DIR__.'/Schedule.php';
 
 class Student implements JsonSerializable
 {
-    private $studentId;
+    private $studentId = -1;
     private $studentName;
     private $username;
     private $password;

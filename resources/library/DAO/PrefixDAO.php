@@ -122,7 +122,7 @@ class PrefixDAO
         $prefix->setPrefixName($row["prefixName"]);
         $prefix->setDepartment((new DepartmentDAO())->getDepartmentFromId($row["departmentId"]));
 
-        return $$prefix;
+        return $prefix;
     }
 
     public function updatePrefix(Prefix $prefix): bool

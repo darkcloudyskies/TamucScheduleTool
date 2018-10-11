@@ -11,7 +11,7 @@ require_once __DIR__.'/Professor.php';
 
 class Section implements JsonSerializable
 {
-    private $sectionId;
+    private $sectionId = -1;
     private $startTime;
     private $endTime;
     private $startDate;
@@ -77,7 +77,7 @@ class Section implements JsonSerializable
      */
     public function getEndDate(): string
     {
-        return $this->endDate;
+        return date("Y-m-d", strtotime($this->endDate));
     }
 
     /**
@@ -190,7 +190,7 @@ class Section implements JsonSerializable
      */
     public function getStartDate(): string
     {
-        return $this->startDate;
+        return date("Y-m-d", strtotime($this->startDate));
     }
 
     /**

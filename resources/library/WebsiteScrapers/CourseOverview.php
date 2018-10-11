@@ -84,7 +84,7 @@ class CourseOverview
                 $prefixName = $split[0];
                 $prefixCode = $prefix->textContent;
 
-                insertPrefix($prefixName,$prefixCode,$departmentName);
+                $this->insertPrefix($prefixName,$prefixCode,$departmentName);
 
                 //echo($prefixName . ' - ' . $prefixCode."<br>");
 

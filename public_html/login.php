@@ -20,10 +20,6 @@ if (!empty($_GET))
             header("Location: account.php");
             exit();
         }
-        else
-        {
-
-        }
     }
 
 }
@@ -58,7 +54,7 @@ include_once ("common/header.php");
                     </form>
                     <hr/>
                     <center><h4>OR</h4></center>
-                    <input class="btn btn-lg btn-register btn-block" type="submit" value="Register">
+                    <input class="btn btn-lg btn-register btn-block" type="button" value="Register" onclick="window.location.href='register.php'">
                 </div>
             </div>
         </div>

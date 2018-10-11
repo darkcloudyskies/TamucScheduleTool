@@ -32,6 +32,9 @@
                 <a class="nav-link" href="schedule.php">Schedule</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="scheduleBuilder.php">Schedule Builder</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="courses.php">Courses</a>
             </li>
             <li class="nav-item">

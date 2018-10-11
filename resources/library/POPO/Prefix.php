@@ -10,7 +10,7 @@ require_once __DIR__.'/Department.php';
 
 class Prefix implements JsonSerializable
 {
-    private $prefixId;
+    private $prefixId = -1;
     private $prefixName;
 
     private $department;

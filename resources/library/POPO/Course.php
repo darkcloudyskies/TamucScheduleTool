@@ -12,7 +12,7 @@ require_once __DIR__.'/CourseRating.php';
 
 class Course implements JsonSerializable
 {
-    private $courseId;
+    private $courseId = -1;
     private $courseName;
     private $courseNum;
     private $hours;
@@ -66,6 +66,7 @@ class Course implements JsonSerializable
      */
     public function setCourseNum(int $courseNum): void
     {
+        //echo($courseNum."<br>");
         $this->courseNum = $courseNum;
     }
 

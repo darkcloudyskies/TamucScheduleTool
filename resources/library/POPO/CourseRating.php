@@ -8,7 +8,7 @@
 
 class CourseRating implements JsonSerializable
 {
-    private $courseRatingId;
+    private $courseRatingId = -1;
     private $courseReview;
     private $courseRating;
 

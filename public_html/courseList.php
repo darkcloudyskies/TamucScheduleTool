@@ -25,6 +25,7 @@ if (!empty($_GET))
             {
                 echo('<li class="list-group-item">');
                 echo("<a class='prefix' href='#' data-id='".$course->getCourseId()."'>".$course->getCourseName()."</a>");
+                echo('<button type="button" class="btn btn-outline-success float-right ' .$course->getCourseId().  '" name="courseId" onclick="addCourse(' .$course->getCourseId() .')" >Add Course</button>');
                 echo('</li>');
             }
             ?>

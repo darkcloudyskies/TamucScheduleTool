@@ -10,7 +10,7 @@ require_once __DIR__.'/Course.php';
 
 class Minor implements JsonSerializable
 {
-    private $minorId;
+    private $minorId = -1;
     private $minorName;
 
     private $courses = array();

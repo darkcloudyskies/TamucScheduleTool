@@ -86,7 +86,7 @@ include_once ("common/header.php");
         <div class="card-header ">
             <form class="form-inline my-2 my-lg-0">
                 <label class="mr-4">Majors</label>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add A Major</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="window.location.href='majors.php'">Add A Major</button>
             </form>
         </div>
         <div class="card-body">
@@ -111,7 +111,7 @@ include_once ("common/header.php");
         <div class="card-header">
             <form class="form-inline my-2 my-lg-0">
                 <label class="mr-4">Minors</label>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add A Minor</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="window.location.href='minors.php'">Add A Minor</button>
             </form>
         </div>
         <div class="card-body">
@@ -139,7 +139,7 @@ include_once ("common/header.php");
         <div class="card-header">
             <form class="form-inline my-2 my-lg-0">
                 <label class="mr-4">Courses Taken</label>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add A Course</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="window.location.href='courses.php'">Add A Course</button>
             </form>
         </div>
         <div class="card-body">

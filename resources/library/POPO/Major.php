@@ -10,7 +10,7 @@ require_once __DIR__.'/Course.php';
 
 class Major implements JsonSerializable
 {
-    private $majorId;
+    private $majorId = -1;
     private $majorName;
 
     private $courses = array();

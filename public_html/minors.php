@@ -8,11 +8,34 @@
 
 require_once "../resources/library/DAO/MinorDAO.php";
 require_once "../resources/library/POPO/Minor.php";
+require_once "../resources/library/DAO/StudentDAO.php";
+require_once "../resources/library/POPO/Student.php";
 
 include_once ("common/loginCheck.php");
 
 $minorDAO = new MinorDAO();
+
+
+if (!empty($_GET))
+{
+    $studentDAO = new StudentDAO();
+    $student = $studentDAO->getStudentFromUsername($_SESSION['user_id']);
+
+
+    $minor = $minorDAO->getMinorFromId($_GET["minorId"]);
+
+    $minors = $student->getMinors();
+    $minors[] = $minor;
+
+    $student->setMinors($minors);
+    $studentDAO->updateStudent($student);
+
+    header("Location: account.php");
+    exit();
+}
+
 $minors = $minorDAO->getAllMinors();
+
 include_once ("common/header.php");
 
 ?>

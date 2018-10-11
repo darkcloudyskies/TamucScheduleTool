@@ -67,7 +67,7 @@ CREATE TABLE course
 (
   courseId INT NOT NULL AUTO_INCREMENT,
   prefixId INT NOT NULL,
-  courseName varchar(20) NOT NULL,
+  courseName varchar(40) NOT NULL,
   hours INT NOT NULL,
   courseNum INT NOT NULL,
   PRIMARY KEY (courseId),
@@ -164,7 +164,7 @@ CREATE TABLE schedulesection
 CREATE TABLE professor
 (
   professorId INT NOT NULL AUTO_INCREMENT,
-  professorName varchar(20) NOT NULL,
+  professorName varchar(40) NOT NULL,
   PRIMARY KEY (professorId),
   UNIQUE (professorName)
 );

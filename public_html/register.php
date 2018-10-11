@@ -59,7 +59,7 @@ include_once ("common/header.php");
                             <input class="btn btn-lg btn-register btn-block" name="type" type="submit" value="Register">
                             <hr/>
                             <center><h4>OR</h4></center>
-                            <input class="btn btn-lg btn-success btn-block" name="type" type="submit" value="Login">
+                            <input class="btn btn-lg btn-success btn-block" type="button" value="Login" onclick="window.location.href='login.php'">
                         </fieldset>
                     </form>
 

@@ -15,6 +15,7 @@ class DatabaseConnection
 
     function getConnection()
     {
+
         $conn = new mysqli($this->servername, $this->username, $this->password, $this->databaseName);
 
         if ($conn->connect_error)

@@ -8,7 +8,7 @@
 
 class Department implements JsonSerializable
 {
-    private $departmentId;
+    private $departmentId = -1;
     private $departmentName;
     private $departmentCode;
 

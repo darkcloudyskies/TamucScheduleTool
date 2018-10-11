@@ -10,7 +10,7 @@ require_once __DIR__.'/Section.php';
 
 class Schedule implements JsonSerializable
 {
-    private $scheduleId;
+    private $scheduleId = -1;
     private $scheduleName;
 
     private $sections = array();
