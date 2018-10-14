@@ -57,7 +57,6 @@ class CourseRatingDAO
     public function getCourseRatingFromStudentAndCourseId(int $studentId,int $courseId): CourseRating
     {
         $courseRating = new CourseRating();
-
         $sql = "SELECT *
                 FROM courserating
                 WHERE studentId = ?
@@ -109,7 +108,7 @@ class CourseRatingDAO
 
         while($row = $result->fetch_assoc())
         {
-            $courses[] = $this->getCourseRatingFromRow($row);
+            $courseRatings[] = $this->getCourseRatingFromRow($row);
         }
 
         return $courseRatings;
@@ -143,6 +142,7 @@ class CourseRatingDAO
         $pst->bind_param("iiisi",$courseRating->getStudentId(),$courseRating->getCourseId(),$courseRating->getCourseRating(),$courseRating->getCourseReview(),$courseRating->getCourseRatingId());
 
         $result = $pst->execute();
+        $result &= mysqli_stmt_affected_rows($pst) > 0;
 
         $conn->close();
 

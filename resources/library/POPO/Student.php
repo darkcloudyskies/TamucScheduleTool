@@ -13,6 +13,8 @@ require_once __DIR__.'/Schedule.php';
 
 class Student implements JsonSerializable
 {
+    private $key = "G";
+
     private $studentId = -1;
     private $studentName;
     private $username;
@@ -22,6 +24,34 @@ class Student implements JsonSerializable
     private $minors = array();
     private $coursesTaken = array();
     private $schedule;
+
+
+    public function getNameFromToken(string $token): string
+    {
+        $studentname = "";
+        $token = rawurldecode($token);
+        for($i=0;$i<strlen($token);)
+        {
+            for($j=0;$j<strlen($this->key ) && $i<strlen($token);$j++,$i++)
+            {
+                $studentname .= $token{$i} ^ $this->key{$j};
+            }
+        }
+        return $studentname;
+    }
+
+    public function getTokenFromName(string $studentname): string
+    {
+        $token = "";
+        for($i=0;$i<strlen($studentname);)
+        {
+            for($j=0;$j<strlen($this->key) && $i<strlen($studentname);$j++,$i++)
+            {
+                $token .= $studentname{$i} ^ $this->key{$j};
+            }
+        }
+        return rawurlencode($token);
+    }
 
     /**
      * @return mixed

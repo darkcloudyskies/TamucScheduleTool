@@ -33,7 +33,7 @@ include_once ("common/header.php");
                     foreach ($professors as $professor)
                     {
                         echo('<li class="list-group-item">');
-                        echo("<a class='professor' href='#' data-id='".$professor->getProfessorId()."'>".$professor->getProfessorName()."</a>");
+                        echo("<a class='professor' href='professordetail.php?professorId=".$professor->getProfessorId()."' data-id='".$professor->getProfessorId()."'>".$professor->getProfessorName()."</a>");
                         echo('</li>');
                     }
                     ?>

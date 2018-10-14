@@ -139,6 +139,7 @@ class ProfessorRatingDAO
         $pst->bind_param("iiisi",$professorRating->getStudentId(),$professorRating->getProfessorId(),$professorRating->getProfessorRating(),$professorRating->getProfessorReview(),$professorRating->getProfessorRatingId());
 
         $result = $pst->execute();
+        $result &= mysqli_stmt_affected_rows($pst) > 0;
 
         $conn->close();
 

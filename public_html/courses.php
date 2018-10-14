@@ -28,11 +28,13 @@ if (!empty($_GET["courseId"]))
     $courseDAO = new CourseDAO();
     $course = $courseDAO->getCourseFromId($_GET["courseId"]);
 
+    $courses = $student->getCoursesTaken();
     $courses[] = $course;
 
     $student->setCoursesTaken($courses);
     $studentDAO->updateStudent($student);
 }
+
 
 include_once ("common/header.php");
 ?>
@@ -99,7 +101,7 @@ include_once ("common/header.php");
                 "courseId" : courseId
             },
             success: function(result){
-                $(".courseId").disabled = true;
+                $("."+courseId).prop("disabled",true);
             }});
     }
 
