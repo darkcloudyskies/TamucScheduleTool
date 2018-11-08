@@ -102,7 +102,7 @@ class SectionDAO
         return $sections;
     }
 
-    private function getSectionsFromResult(mysqli_result $result): array
+    public function getSectionsFromResult(mysqli_result $result): array
     {
         $sections = array();
 

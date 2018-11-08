@@ -88,7 +88,7 @@ class ScheduleDAO
         return $schedules;
     }
 
-    private function getScheduleFromRow(array $row): Schedule
+    public function getScheduleFromRow(array $row): Schedule
     {
         $schedule = new Schedule();
 

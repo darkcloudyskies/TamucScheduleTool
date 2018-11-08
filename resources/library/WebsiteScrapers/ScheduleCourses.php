@@ -21,7 +21,7 @@ class ScheduleCourses
         $departments = $departmentDAO->getAllDepartments();
 
         //$this->scrapeDepartmentPage($departments[0]);
-        for($i = 0;$i < 10; $i++)
+        for($i = 0;$i < 50; $i++)
         {
             $department = $departments[$i];
             $this->scrapeDepartmentPage($department);

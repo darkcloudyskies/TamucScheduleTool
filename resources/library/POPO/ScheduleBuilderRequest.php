@@ -12,11 +12,11 @@ class ScheduleBuilderRequest
 
     private $minimumHours;
     private $maximumHours;
-    private $minimumOnlineHours;
+    private $maximumOnlineHours;
 
     private $filter;
 
-    private $courseIdBlackList;
+    private $sectionIdBlackList;
 
     /**
      * @return mixed
@@ -53,17 +53,17 @@ class ScheduleBuilderRequest
     /**
      * @return mixed
      */
-    public function getMinimumOnlineHours(): int
+    public function getMaximumOnlineHours(): int
     {
-        return $this->minimumOnlineHours;
+        return $this->maximumOnlineHours;
     }
 
     /**
-     * @param mixed $minimumOnlineHours
+     * @param mixed $maximumOnlineHours
      */
-    public function setMinimumOnlineHours(int $minimumOnlineHours): void
+    public function setMaximumOnlineHours(int $maximumOnlineHours): void
     {
-        $this->minimumOnlineHours = $minimumOnlineHours;
+        $this->maximumOnlineHours = $maximumOnlineHours;
     }
 
     /**
@@ -85,17 +85,17 @@ class ScheduleBuilderRequest
     /**
      * @return mixed
      */
-    public function getCourseIdBlackList(): array
+    public function getSectionIdBlackList(): array
     {
-        return $this->courseIdBlackList;
+        return $this->sectionIdBlackList;
     }
 
     /**
-     * @param mixed $courseIdBlackList
+     * @param mixed $sectionIdBlackList
      */
-    public function setCourseIdBlackList(array $courseIdBlackList): void
+    public function setSectionIdBlackList(array $sectionIdBlackList): void
     {
-        $this->courseIdBlackList = $courseIdBlackList;
+        $this->sectionIdBlackList = $sectionIdBlackList;
     }
 
     /**
