@@ -24,6 +24,10 @@ class TimeRange
      */
     public function setStartTime($startTime): void
     {
+        if (strlen($startTime) == 5)
+        {
+            $startTime .= ':00';
+        }
         $this->startTime = $startTime;
     }
 
@@ -40,6 +44,10 @@ class TimeRange
      */
     public function setEndTime($endTime): void
     {
+        if (strlen($endTime) == 5)
+        {
+            $endTime .= ':00';
+        }
         $this->endTime = $endTime;
     }
 }

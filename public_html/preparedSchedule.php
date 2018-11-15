@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
 require_once "../resources/library/DAO/StudentDAO.php";
 require_once "../resources/library/POPO/Student.php";
 
@@ -14,6 +14,9 @@ require_once "../resources/library/POPO/Course.php";
 
 require_once "../resources/library/DAO/ScheduleBuilderDAO.php";
 require_once "../resources/library/POPO/ScheduleBuilderRequest.php";
+
+require_once "../resources/library/POPO/Filter.php";
+require_once "../resources/library/POPO/TimeRange.php";
 
 
 include_once ("common/loginCheck.php");
@@ -35,6 +38,24 @@ if(isset($_GET["sectionBlacklist"]))
     $scheduleBuilderRequest->setSectionIdBlackList($_GET["sectionBlacklist"]);
 }
 
+$filter = new Filter();
+$ranges = array();
+$timeRange = new TimeRange();
+
+
+$mondayStartTimes = $_GET["mondayStartTime"];
+$mondayEndTimes = $_GET["mondayEndTime"];
+
+for($x = 0;$x< count($mondayStartTimes); $x++) {
+    $timeRange->setStartTime($mondayStartTimes[$x]);
+    $timeRange->setEndTime($mondayEndTimes[$x]);
+    $ranges[] = $timeRange;
+}
+
+$filter->setMondayRanges($ranges);
+
+
+$scheduleBuilderRequest->setFilter($filter);
 
 $schedule = $scheduleBuilderDAO->generateSchedule($scheduleBuilderRequest);
 $sections = $schedule->getSections();
@@ -53,12 +74,53 @@ include_once ("common/header.php");
                 <input type="hidden" name="minimumTotalHours" value="<?= $_GET["minimumTotalHours"] ?>">
                 <input type="hidden" name="maximumTotalHours" value="<?= $_GET["maximumTotalHours"]?>">
                 <input type="hidden" name="maximumOnlineHours" value="<?= $_GET["maximumOnlineHours"]?>">
-
                 <?php
                     foreach($scheduleBuilderRequest->getSectionIdBlackList() as $blacklistedSection)
                     {
                         echo('<input type="hidden" name="sectionBlacklist[]" value="' .$blacklistedSection.'">');
                     }
+
+                    $counter = 0;
+
+                    foreach($scheduleBuilderRequest->getFilter()->getMondayRanges() as $mondayRange)
+                    {
+                        echo('<input type="hidden" value="'.$mondayRange->getStartTime().'" name="mondayStartTime['.$counter.']">');
+                        echo('<input type="hidden" value="'.$mondayRange->getEndTime().'" name="mondayEndTime['.$counter++.']">');
+                    }
+
+                    $counter = 0;
+
+                    foreach($scheduleBuilderRequest->getFilter()->getMondayRanges() as $tuesdayRange)
+                    {
+                        echo('<input type="hidden" value="'.$tuesdayRange->getStartTime().'" name="tuesdayStartTime['.$counter.']">');
+                        echo('<input type="hidden" value="'.$tuesdayRange->getEndTime().'" name="tuesdayEndTime['.$counter++.']">');
+                    }
+
+                    $counter = 0;
+
+                    foreach($scheduleBuilderRequest->getFilter()->getMondayRanges() as $wednesdayRange)
+                    {
+                        echo('<input type="hidden" value="'.$wednesdayRange->getStartTime().'" name="wednesdayStartTime['.$counter.']">');
+                        echo('<input type="hidden" value="'.$wednesdayRange->getEndTime().'" name="wednesdayEndTime['.$counter++.']">');
+                    }
+
+
+                    $counter = 0;
+
+                    foreach($scheduleBuilderRequest->getFilter()->getMondayRanges() as $thursdayRange)
+                    {
+                        echo('<input type="hidden" value="'.$thursdayRange->getStartTime().'" name="thursdayStartTime['.$counter.']">');
+                        echo('<input type="hidden" value="'.$thursdayRange->getEndTime().'" name="thursdayEndTime['.$counter++.']">');
+                    }
+
+                    $counter = 0;
+
+                    foreach($scheduleBuilderRequest->getFilter()->getMondayRanges() as $fridayRange)
+                    {
+                        echo('<input type="hidden" value="'.$fridayRange->getStartTime().'" name="fridayStartTime['.$counter.']">');
+                        echo('<input type="hidden" value="'.$fridayRange->getEndTime().'" name="fridayEndTime['.$counter++.']">');
+                    }
+
                 ?>
 
 

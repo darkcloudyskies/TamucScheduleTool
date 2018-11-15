@@ -13,6 +13,7 @@ include_once ("common/header.php");
 
 <main role="main" class="container mt-2 ">
     <form action="preparedSchedule.php">
+        <input type="hidden" name="sectionBlacklist[]" value="-1">
         <h2>General</h2>
         <div class="card mt-2">
             <div class="card-header ">
@@ -72,13 +73,13 @@ include_once ("common/header.php");
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">Start Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="mondayStartTime0" name="mondayStartTime[0]">
+                                    <input class="form-control" type="time" value="00:00:00"  id="mondayStartTime0" name="mondayStartTime[0]">
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">End Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="mondayEndTime0" name="mondayEndTime[0]">
+                                    <input class="form-control" type="time" value="23:59:59"  id="mondayEndTime0" name="mondayEndTime[0]">
                                 </div>
                             </div>
                         </div>
@@ -99,13 +100,13 @@ include_once ("common/header.php");
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">Start Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="tuesdayStartTime0" name="tuesdayStartTime[0]">
+                                    <input class="form-control" type="time" value="00:00:00"  id="tuesdayStartTime0" name="tuesdayStartTime[0]">
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">End Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="tuesdayEndTime0" name="tuesdayEndTime[0]">
+                                    <input class="form-control" type="time" value="23:59:59"  id="tuesdayEndTime0" name="tuesdayEndTime[0]">
                                 </div>
                             </div>
                         </div>
@@ -126,13 +127,13 @@ include_once ("common/header.php");
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">Start Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="wednesdayStartTime0" name="wednesdayStartTime[0]">
+                                    <input class="form-control" type="time" value="00:00:00"  id="wednesdayStartTime0" name="wednesdayStartTime[0]">
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">End Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="wednesdayEndTime0" name="wednesdayEndTime[0]">
+                                    <input class="form-control" type="time" value="23:59:59"  id="wednesdayEndTime0" name="wednesdayEndTime[0]">
                                 </div>
                             </div>
                         </div>
@@ -153,13 +154,13 @@ include_once ("common/header.php");
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">Start Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="thursdayStartTime0" name="thursdayStartTime[0]">
+                                    <input class="form-control" type="time" value="00:00:00"  id="thursdayStartTime0" name="thursdayStartTime[0]">
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">End Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="thursdayEndTime0" name="thursdayEndTime[0]">
+                                    <input class="form-control" type="time" value="23:59:59"  id="thursdayEndTime0" name="thursdayEndTime[0]">
                                 </div>
                             </div>
                         </div>
@@ -180,13 +181,13 @@ include_once ("common/header.php");
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">Start Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="fridayStartTime0" name="fridayStartTime[0]">
+                                    <input class="form-control" type="time" value="00:00:00"  id="fridayStartTime0" name="fridayStartTime[0]">
                                 </div>
                             </div>
                             <div class="row">
                                 <label for="example-time-input" class="col-2 col-form-label">End Time</label>
                                 <div class="col-2">
-                                    <input class="form-control" type="time" value="13:45:00"  id="fridayEndTime0" name="fridayEndTime[0]">
+                                    <input class="form-control" type="time" value="23:59:59"  id="fridayEndTime0" name="fridayEndTime[0]">
                                 </div>
                             </div>
                         </div>

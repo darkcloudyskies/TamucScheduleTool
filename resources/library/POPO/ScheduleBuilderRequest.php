@@ -16,7 +16,7 @@ class ScheduleBuilderRequest
 
     private $filter;
 
-    private $sectionIdBlackList;
+    private $sectionIdBlackList = array();
 
     /**
      * @return mixed

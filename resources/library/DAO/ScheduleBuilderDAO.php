@@ -37,10 +37,10 @@ class ScheduleBuilderDAO
                     LEFT JOIN courseprereq c4 ON course.courseId = c4.courseId
                     WHERE c4.preReqId NOT IN (SELECT courseId from studentcourse WHERE studentId = ?)
                 )
-                AND section.sectionId NOT IN(".implode(',',$scheduleBuilderRequest->getSectionIdBlackList()).")";
+                AND section.sectionId NOT IN(".implode(',',$scheduleBuilderRequest->getSectionIdBlackList()).") ";
 
         $sql .= $this->getTimeSQL($scheduleBuilderRequest);
-                 
+
 
         $schedule->setStudentId($scheduleBuilderRequest->getStudentId());
         $schedule->setScheduleName("test");
@@ -116,35 +116,35 @@ class ScheduleBuilderDAO
 
     private function getTimeSQL(ScheduleBuilderRequest $scheduleBuilderRequest) : string
     {
-        $sql = " AND ((section.weeKDays = 'Web') ";
+        $sql = " AND ((section.weeKDays = 'Web') OR (1=1 ";
         $filters = $scheduleBuilderRequest->getFilter();
 
         foreach($filters->getMondayRanges() as $mondayRange)
         {
-            $sql .= " OR ((section.startTime >= " . $mondayRange->getStartTime() . " AND section.endTime <= ".$mondayRange.getEndTime().") OR section.weekDays NOT LIKE '%M%' )";
+            $sql .= " AND ((section.startTime >= '" . $mondayRange->getStartTime() . "' AND section.endTime <= '".$mondayRange->getEndTime()."') OR section.weekDays NOT LIKE '%M%' )";
         }
 
         foreach($filters->getMondayRanges() as $tuesdayRange)
         {
-            $sql .= " OR ((section.startTime >= " . $tuesdayRange->getStartTime() . " AND section.endTime <= ".$tuesdayRange.getEndTime().") OR section.weekDays NOT LIKE '%T%' )";
+            $sql .= " AND ((section.startTime >= '" . $tuesdayRange->getStartTime() . "' AND section.endTime <= '".$tuesdayRange->getEndTime()."') OR section.weekDays NOT LIKE '%T%' )";
         }
 
         foreach($filters->getMondayRanges() as $wednesdayRange)
         {
-            $sql .= " OR ((section.startTime >= " . $wednesdayRange->getStartTime() . " AND section.endTime <= ".$wednesdayRange.getEndTime().") OR section.weekDays NOT LIKE '%W%' )";
+            $sql .= " AND ((section.startTime >= '" . $wednesdayRange->getStartTime() . "' AND section.endTime <= '" . $wednesdayRange->getEndTime()."') OR section.weekDays NOT LIKE '%W%' )";
         }
 
         foreach($filters->getMondayRanges() as $thursdayRange)
         {
-            $sql .= " OR ((section.startTime >= " . $thursdayRange->getStartTime() . " AND section.endTime <= ".$thursdayRange.getEndTime().") OR section.weekDays NOT LIKE '%R%' )";
+            $sql .= " AND ((section.startTime >= '" . $thursdayRange->getStartTime() . "' AND section.endTime <= '".$thursdayRange->getEndTime()."') OR section.weekDays NOT LIKE '%R%' )";
         }
 
         foreach($filters->getMondayRanges() as $fridayRange)
         {
-            $sql .= " OR ((section.startTime >= " . $fridayRange->getStartTime() . " AND section.endTime <= ".$fridayRange.getEndTime().") OR section.weekDays NOT LIKE '%F%' )";
+            $sql .= " AND ((section.startTime >= '" . $fridayRange->getStartTime() . "' AND section.endTime <= '".$fridayRange->getEndTime()."') OR section.weekDays NOT LIKE '%F%' )";
         }
 
-        $sql .= ")";
+        $sql .= "))";
         return $sql;
     }
 
