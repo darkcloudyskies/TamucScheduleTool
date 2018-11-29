@@ -39,10 +39,7 @@ if (!empty($_GET["rating"] && $_GET["review"]))
     $professorRating->setProfessorId($professor->getProfessorId());
     $professorRating->setProfessorRating($_GET["rating"]);
     $professorRating->setProfessorReview($_GET["review"]);
-    if(!$professorRatingDAO->updateProfessorRating($professorRating))
-    {
-        $professorRatingDAO->insertProfessorRating($professorRating);
-    }
+    ccccccccc
 }
 
 include_once ("common/header.php");

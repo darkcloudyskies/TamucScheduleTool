@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 require_once "../resources/library/DAO/StudentDAO.php";
 require_once "../resources/library/POPO/Student.php";
 
@@ -14,6 +14,9 @@ require_once "../resources/library/POPO/Course.php";
 
 require_once "../resources/library/DAO/ScheduleBuilderDAO.php";
 require_once "../resources/library/POPO/ScheduleBuilderRequest.php";
+
+require_once "../resources/library/DAO/ScheduleDAO.php";
+require_once "../resources/library/POPO/Schedule.php";
 
 require_once "../resources/library/POPO/Filter.php";
 require_once "../resources/library/POPO/TimeRange.php";
@@ -59,6 +62,24 @@ $scheduleBuilderRequest->setFilter($filter);
 
 $schedule = $scheduleBuilderDAO->generateSchedule($scheduleBuilderRequest);
 $sections = $schedule->getSections();
+$scheduleDAO = new ScheduleDAO();
+if(isset($_GET["action"]) && $_GET["action"] === "save")
+{
+    $schedule = $scheduleDAO->getScheduleFromStudentId($student->getStudentId());
+    if($schedule == null)
+    {
+        $schedule = new Schedule();
+    }
+    $schedule->setSections($sections);
+    $schedule->setStudentId($student->getStudentId());
+    $schedule->setScheduleName($_GET["name"]);
+
+    if(!$scheduleDAO->updateSchedule($schedule))
+    {
+        $scheduleDAO->insertSchedule($schedule);
+    }
+    echo('<meta http-equiv="refresh" content="0; url=schedule.php">');
+}
 
 include_once ("common/header.php");
 ?>
@@ -66,11 +87,13 @@ include_once ("common/header.php");
 
 <main role="main" class="container mt-2 ">
     <div class="card mt-2">
+    <form accept-charset="UTF-8" role="form">
         <div class="card-header ">
-            <?php echo $student->getSchedule()->getScheduleName(); ?>
+            <input type="text" class="form-control" name="name" placeholder="Schedule Name">
+            <button class="btn btn-outline-success mt-2" type="submit" name="action" value="save"">Save Schedule</button>
         </div>
         <div class="card-body">
-            <form accept-charset="UTF-8" role="form">
+
                 <input type="hidden" name="minimumTotalHours" value="<?= $_GET["minimumTotalHours"] ?>">
                 <input type="hidden" name="maximumTotalHours" value="<?= $_GET["maximumTotalHours"]?>">
                 <input type="hidden" name="maximumOnlineHours" value="<?= $_GET["maximumOnlineHours"]?>">

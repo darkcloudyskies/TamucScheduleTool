@@ -23,7 +23,7 @@ class SectionDAO
 
         if($result->num_rows > 0)
         {
-            $this->getSectionsFromResult($result);
+            $sections = $this->getSectionsFromResult($result);
         }
 
         $conn->close();
@@ -94,7 +94,7 @@ class SectionDAO
 
         if($result->num_rows > 0)
         {
-            $this->getSectionsFromResult($result);
+            $sections = $this->getSectionsFromResult($result);
         }
 
         $conn->close();

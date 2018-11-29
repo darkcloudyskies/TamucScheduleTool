@@ -30,33 +30,43 @@ $studentusername = $student->getUsername();
 
 $sections = $student->getSchedule()->getSections();
 
+
+{
+
+}
 ?>
 
 
 <main role="main" class="container mt-2 ">
     <div class="card mt-2">
-        <div class="card-header ">
-            <?php echo $student->getSchedule()->getScheduleName(); ?>
-        </div>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                <?php
-                foreach ($sections as $section)
-                {
-                    echo('<li class="list-group-item">');
-                    echo($section->getCourse()->getPrefix()->getPrefixName() . ' - ');
-                    echo($section->getCourse()->getCourseNum() . ' - ');
-                    echo($section->getCourse()->getCourseName() . ' - ');
-                    echo($section->getWeekDays() . ' - ');
-                    echo($section->getStartTime() . ' - ');
-                    echo($section->getEndTime() . ' - ');
-                    echo($section->getLocation() . ' - ');
-                    echo('</li>');
+        <?php if($student->getSchedule()->getScheduleId() != -1){ ?>
+            <div class="card-header ">
+                <?php echo $student->getSchedule()->getScheduleName(); ?>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <?php
+                    foreach ($sections as $section)
+                    {
+                        echo('<li class="list-group-item">');
+                        echo($section->getCourse()->getPrefix()->getPrefixName() . ' - ');
+                        echo($section->getCourse()->getCourseNum() . ' - ');
+                        echo($section->getCourse()->getCourseName() . ' - ');
+                        echo($section->getWeekDays() . ' - ');
+                        echo($section->getStartTime() . ' - ');
+                        echo($section->getEndTime() . ' - ');
+                        echo($section->getLocation() . ' - ');
+                        echo('</li>');
 
-                }
-                ?>
-            </ul>
-        </div>
+                    }
+                    ?>
+                </ul>
+            </div>
+        <?php } else { ?>
+            <div class="card-header ">
+                No Schedule Found, please use the Schedule Builder.
+            </div>
+        <?php }  ?>
     </div>
 
     <div class="card mt-2">
