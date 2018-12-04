@@ -5,7 +5,7 @@
  * Date: 10/13/2018
  * Time: 4:31 PM
  */
-
+error_reporting(0);
 require_once "../resources/library/POPO/Student.php";
 require_once "../resources/library/DAO/CourseDAO.php";
 require_once "../resources/library/DAO/CourseRatingDAO.php";
@@ -45,6 +45,10 @@ if (!empty($_GET["rating"] && $_GET["review"]))
     {
         $courseRatingDAO->insertCourseRating($courseRating);
     }
+    $course = $courseDAO->getCourseFromId($_GET["courseId"]);
+    $prefix = $course->getPrefix();
+    $department = $prefix->getDepartment();
+    $ratings = $course->getCourseRatings();
 }
 
 include_once ("common/header.php");

@@ -40,7 +40,7 @@ class ScheduleBuilderDAO
                 AND section.sectionId NOT IN(".implode(',',$scheduleBuilderRequest->getSectionIdBlackList()).") ";
 
         $sql .= $this->getTimeSQL($scheduleBuilderRequest);
-
+        $sql .= $this->getSortingSQL($scheduleBuilderRequest);
 
         $schedule->setStudentId($scheduleBuilderRequest->getStudentId());
         $schedule->setScheduleName("test");
@@ -145,6 +145,20 @@ class ScheduleBuilderDAO
         }
 
         $sql .= "))";
+        return $sql;
+    }
+
+    private function getSortingSQL(ScheduleBuilderRequest $scheduleBuilderRequest)
+    {
+        $sql = " ORDER BY section.startTime ";
+        if($scheduleBuilderRequest->getSortTime() === "early")
+        {
+            $sql .= "ASC";
+        }
+        else
+        {
+            $sql .= "DESC";
+        }
         return $sql;
     }
 

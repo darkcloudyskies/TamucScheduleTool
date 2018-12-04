@@ -1,5 +1,6 @@
 <?php
 //include_once ("common/loginCheck.php");
+error_reporting(0);
 include_once ("common/header.php");
 
 require_once "../resources/library/DAO/StudentDAO.php";
@@ -30,10 +31,6 @@ $studentusername = $student->getUsername();
 
 $sections = $student->getSchedule()->getSections();
 
-
-{
-
-}
 ?>
 
 
@@ -55,7 +52,7 @@ $sections = $student->getSchedule()->getSections();
                         echo($section->getWeekDays() . ' - ');
                         echo($section->getStartTime() . ' - ');
                         echo($section->getEndTime() . ' - ');
-                        echo($section->getLocation() . ' - ');
+                        echo($section->getLocation());
                         echo('</li>');
 
                     }

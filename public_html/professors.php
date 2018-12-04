@@ -5,7 +5,7 @@
  * Date: 9/16/2018
  * Time: 5:16 PM
  */
-
+error_reporting(0);
 require_once "../resources/library/DAO/ProfessorDAO.php";
 require_once "../resources/library/POPO/Professor.php";
 

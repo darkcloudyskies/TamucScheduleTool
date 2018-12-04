@@ -5,7 +5,7 @@
  * Date: 9/16/2018
  * Time: 7:48 PM
  */
-
+error_reporting(0);
 require_once "../resources/library/DAO/PrefixDAO.php";
 require_once "../resources/library/POPO/Prefix.php";
 

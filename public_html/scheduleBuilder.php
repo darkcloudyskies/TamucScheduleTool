@@ -5,7 +5,7 @@
  * Date: 10/7/2018
  * Time: 6:59 PM
  */
-
+error_reporting(0);
 include_once ("common/loginCheck.php");
 
 include_once ("common/header.php");
@@ -23,7 +23,7 @@ include_once ("common/header.php");
                     <div class="col-sm-2">Minimum Total Hours</div>
                     <div class="col-md-2">
                         <div class="form-check">
-                            <input class="form-number-input" type="number" id="minimumTotalHours" name="minimumTotalHours">
+                            <input class="form-number-input" type="number" id="minimumTotalHours" name="minimumTotalHours" required>
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@ include_once ("common/header.php");
                     <div class="col-sm-2">Maximum Total Hours</div>
                     <div class="col-md-2">
                         <div class="form-check">
-                            <input class="form-number-input" type="number" id="maximumTotalHours" name="maximumTotalHours">
+                            <input class="form-number-input" type="number" id="maximumTotalHours" name="maximumTotalHours" required>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@ include_once ("common/header.php");
                     <div class="col-sm-2">Maximum Online Hours</div>
                     <div class="col-md-2">
                         <div class="form-check">
-                            <input class="form-number-input" type="number" id="maximumOnlineHours" name="maximumOnlineHours">
+                            <input class="form-number-input" type="number" id="maximumOnlineHours" name="maximumOnlineHours" required>
                         </div>
                     </div>
                 </div>
@@ -210,7 +210,20 @@ include_once ("common/header.php");
             <div class="card-header ">
             </div>
             <div class="card-body">
-
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="sortTime" value="early" required>
+                                <label class="form-check-label">Early</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="sortTime" value="late">
+                                <label class="form-check-label">Late</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="form-group">

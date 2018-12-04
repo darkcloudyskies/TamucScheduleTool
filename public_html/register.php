@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 require_once "../resources/library/DAO/StudentDAO.php";
 require_once "../resources/library/POPO/Student.php";
 

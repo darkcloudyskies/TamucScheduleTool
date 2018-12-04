@@ -5,6 +5,7 @@
  * Date: 10/13/2018
  * Time: 4:31 PM
  */
+error_reporting(0);
 
 require_once "../resources/library/POPO/Student.php";
 require_once "../resources/library/DAO/ProfessorDAO.php";
@@ -39,7 +40,12 @@ if (!empty($_GET["rating"] && $_GET["review"]))
     $professorRating->setProfessorId($professor->getProfessorId());
     $professorRating->setProfessorRating($_GET["rating"]);
     $professorRating->setProfessorReview($_GET["review"]);
-    ccccccccc
+    if(!$professorRatingDAO->updateProfessorRating($professorRating))
+    {
+        $professorRatingDAO->insertProfessorRating($professorRating);
+    }
+    $professor = $professorDAO->getProfessorFromId($_GET["professorId"]);
+    $ratings = $professor->getProfessorRatings();
 }
 
 include_once ("common/header.php");

@@ -60,6 +60,8 @@ $filter->setMondayRanges($ranges);
 
 $scheduleBuilderRequest->setFilter($filter);
 
+$scheduleBuilderRequest->setSortTime($_GET["sortTime"]);
+
 $schedule = $scheduleBuilderDAO->generateSchedule($scheduleBuilderRequest);
 $sections = $schedule->getSections();
 $scheduleDAO = new ScheduleDAO();

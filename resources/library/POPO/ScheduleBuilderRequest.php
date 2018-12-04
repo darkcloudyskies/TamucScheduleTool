@@ -14,6 +14,8 @@ class ScheduleBuilderRequest
     private $maximumHours;
     private $maximumOnlineHours;
 
+    private $sortTime;
+
     private $filter;
 
     private $sectionIdBlackList = array();
@@ -112,5 +114,21 @@ class ScheduleBuilderRequest
     public function setStudentId(int $studentId): void
     {
         $this->studentId = $studentId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSortTime()
+    {
+        return $this->sortTime;
+    }
+
+    /**
+     * @param mixed $sortTime
+     */
+    public function setSortTime($sortTime): void
+    {
+        $this->sortTime = $sortTime;
     }
 }
